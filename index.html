@@ -53,7 +53,7 @@
 
   /* ---------- Stage ---------- */
   #stage{
-    position:relative;height:min(40vh,420px);min-height:230px;overflow:hidden;
+    position:relative;height:min(40vh,420px);min-height:230px;overflow:hidden;container-type:inline-size;
     background:linear-gradient(180deg,var(--sky) 0%,var(--sky2) 100%);
     border-radius:0 0 28px 28px;
   }
@@ -91,7 +91,7 @@
 
   .animal-wrap{position:absolute;left:50%;bottom:12%;width:min(46vw,210px);aspect-ratio:1;transform:translateX(-50%);transform-origin:50% 60%;z-index:2}
   @media (min-width:820px) and (orientation:landscape){.animal-wrap{width:min(24vw,300px);bottom:16%}}
-  .animal{width:100%;height:100%;animation:idle 3s ease-in-out infinite;transform-origin:50% 100%}
+  .animal{position:relative;width:100%;height:100%;animation:idle 3s ease-in-out infinite;transform-origin:50% 100%}
   .animal svg{width:100%;height:100%;display:block;overflow:visible}
   .eye{transition:transform .15s;transform-box:fill-box;transform-origin:center}
   .happy .eye{transform:scaleY(.18)}
@@ -113,6 +113,12 @@
     50%{transform:translateX(calc(-50% + 110%)) rotate(360deg)}
     100%{transform:translateX(-50%) rotate(720deg)}
   }
+  .anim-rollback{animation:rollback 2.5s ease-in-out 2}
+  @keyframes rollback{
+    0%{transform:translateX(-50%) rotate(0)}
+    50%{transform:translateX(calc(-50% - 110%)) rotate(-360deg)}
+    100%{transform:translateX(-50%) rotate(-720deg)}
+  }
   .anim-grow{animation:grow 2.5s ease-in-out 2}
   @keyframes grow{
     0%{transform:translateX(-50%) scale(1) rotate(0)}
@@ -133,18 +139,36 @@
     75%{transform:translateX(-50%) rotate(0)}
     87%{transform:translateX(-5%) translateY(-10%) rotate(14deg)}
   }
-  .anim-flip{animation:flip 2.5s cubic-bezier(.3,.6,.4,1) 2}
-  @keyframes flip{
-    0%{transform:translateX(-50%) translateY(0) rotate(0)}
-    15%{transform:translateX(-50%) translateY(6%) scaleY(.85) rotate(0)}
-    55%{transform:translateX(-50%) translateY(-70%) rotate(-200deg)}
-    100%{transform:translateX(-50%) translateY(0) rotate(-360deg)}
+  /* Exit: three hops travelling right, the third one off the screen; straight back in from the left with small hops */
+  .anim-exit{animation:exit 5s linear 1}
+  @keyframes exit{
+    0%   {transform:translateX(-50%) translateY(0) scaleY(1)}
+    3%   {transform:translateX(-50%) translateY(4%) scaleY(.9)}
+    9%   {transform:translateX(calc(-50% + 7cqw)) translateY(-40%) rotate(5deg)}
+    15%  {transform:translateX(calc(-50% + 14cqw)) translateY(0) scaleY(1) rotate(0)}
+    18%  {transform:translateX(calc(-50% + 14cqw)) translateY(4%) scaleY(.9)}
+    24%  {transform:translateX(calc(-50% + 23cqw)) translateY(-44%) rotate(6deg)}
+    30%  {transform:translateX(calc(-50% + 32cqw)) translateY(0) scaleY(1) rotate(0)}
+    33%  {transform:translateX(calc(-50% + 32cqw)) translateY(4%) scaleY(.9)}
+    39%  {transform:translateX(calc(-50% + 58cqw)) translateY(-55%) rotate(10deg)}
+    45%  {transform:translateX(calc(-50% + 90cqw)) translateY(-10%) rotate(12deg)}
+    45.01%{transform:translateX(calc(-50% - 90cqw)) translateY(0) rotate(0)}
+    50%  {transform:translateX(calc(-50% - 68cqw)) translateY(-30%) rotate(-6deg)}
+    56%  {transform:translateX(calc(-50% - 48cqw)) translateY(0) rotate(0)}
+    61%  {transform:translateX(calc(-50% - 36cqw)) translateY(-26%) rotate(-5deg)}
+    67%  {transform:translateX(calc(-50% - 24cqw)) translateY(0) rotate(0)}
+    72%  {transform:translateX(calc(-50% - 15cqw)) translateY(-22%) rotate(-4deg)}
+    78%  {transform:translateX(calc(-50% - 7cqw)) translateY(0) rotate(0)}
+    83%  {transform:translateX(calc(-50% - 3cqw)) translateY(-16%) rotate(-3deg)}
+    89%  {transform:translateX(-50%) translateY(0) scaleY(1) rotate(0)}
+    93%  {transform:translateX(-50%) translateY(3%) scaleY(.92)}
+    100% {transform:translateX(-50%) translateY(0) scaleY(1)}
   }
   .anim-hello{animation:hello .9s ease-in-out 1}
   @keyframes hello{0%,100%{transform:translateX(-50%) rotate(0)}25%{transform:translateX(-50%) rotate(-8deg) scale(1.06)}75%{transform:translateX(-50%) rotate(8deg) scale(1.06)}}
   @media (prefers-reduced-motion:reduce){
     .animal,.sun,.cloud{animation:none}
-    .anim-spin,.anim-jump,.anim-roll,.anim-grow,.anim-dance,.anim-flip{animation:hello .9s ease-in-out 1}
+    .anim-spin,.anim-jump,.anim-roll,.anim-rollback,.anim-grow,.anim-dance,.anim-flip,.anim-exit{animation:hello .9s ease-in-out 1}
   }
 
   .friend-tag{
@@ -351,10 +375,10 @@
     {id:'teeth',     icon:ICON.brush,  anim:'jump',  en:'Brush teeth',  sv:'Borsta tänderna'},
     {id:'water1',    icon:ICON.water,  anim:'roll',  en:'Drink water',  sv:'Dricka vatten'},
     {id:'breakfast', icon:ICON.food,   anim:'grow',  en:'Food',         sv:'Mat'},
-    {id:'water2',    icon:ICON.water,  anim:'dance', en:'Drink water',  sv:'Dricka vatten'},
-    {id:'poop',      icon:ICON.poop,   anim:'flip',  en:'Poop',         sv:'Bajsa'},
+    {id:'water2',    icon:ICON.water,  anim:'rollback', sfx:'roll', en:'Drink water',  sv:'Dricka vatten'},
+    {id:'poop',      icon:ICON.poop,   anim:'exit',  en:'Poop',         sv:'Bajsa'},
   ];
-  const ANIM_MS = {spin:5000, jump:5000, roll:5000, grow:5000, dance:5000, flip:5000, hello:900};
+  const ANIM_MS = {spin:5000, jump:5000, roll:5000, rollback:5000, grow:5000, dance:5000, flip:5000, exit:5000, hello:900};
 
   const T = {
     en:{
@@ -390,23 +414,21 @@
 
   const ANIMALS = [
     { id:'bunny', en:'Bunny', sv:'Kaninen', svg:`
-      <ellipse cx="78" cy="55" rx="15" ry="42" fill="#F3F1F6" stroke="#8E86A3" stroke-width="4"/>
-      <ellipse cx="122" cy="55" rx="15" ry="42" fill="#F3F1F6" stroke="#8E86A3" stroke-width="4"/>
+      <ellipse cx="78" cy="55" rx="15" ry="42" fill="#F3F1F6" stroke="#D9D4E3" stroke-width="3"/>
+      <ellipse cx="122" cy="55" rx="15" ry="42" fill="#F3F1F6" stroke="#D9D4E3" stroke-width="3"/>
       <ellipse cx="78" cy="58" rx="7" ry="30" fill="#F6B8C6"/>
       <ellipse cx="122" cy="58" rx="7" ry="30" fill="#F6B8C6"/>
-      <ellipse cx="100" cy="158" rx="44" ry="36" fill="#F3F1F6" stroke="#8E86A3" stroke-width="4"/>
-      <circle cx="100" cy="112" r="44" fill="#F3F1F6" stroke="#8E86A3" stroke-width="4"/>
-      <circle cx="74" cy="122" r="8" fill="#F6B8C6" opacity=".8"/><circle cx="126" cy="122" r="8" fill="#F6B8C6" opacity=".8"/>
-      <ellipse cx="100" cy="120" rx="5" ry="4" fill="#E58CA0"/>
-      <path d="M62 126 L82 122 M62 134 L82 128 M138 126 L118 122 M138 134 L118 128" stroke="#B8B0C9" stroke-width="2" stroke-linecap="round"/>
+      <ellipse cx="100" cy="158" rx="44" ry="36" fill="#F3F1F6" stroke="#D9D4E3" stroke-width="3"/>
+      <circle cx="100" cy="112" r="44" fill="#F3F1F6" stroke="#D9D4E3" stroke-width="3"/>
+      <circle cx="74" cy="122" r="8" fill="#F6B8C6" opacity=".8"/><circle cx="126" cy="122" r="8" fill="#F6B8C6" opacity=".8"/> <ellipse cx="100" cy="120" rx="5" ry="4" fill="#E58CA0"/> <path d="M62 126 L82 122 M62 134 L82 128 M138 126 L118 122 M138 134 L118 128" stroke="#B8B0C9" stroke-width="2" stroke-linecap="round"/>
       ${face(100,104,17,7,126)}
-      <ellipse cx="80" cy="190" rx="16" ry="8" fill="#F3F1F6" stroke="#8E86A3" stroke-width="4"/>
-      <ellipse cx="120" cy="190" rx="16" ry="8" fill="#F3F1F6" stroke="#8E86A3" stroke-width="4"/>`},
+      <ellipse cx="80" cy="190" rx="16" ry="8" fill="#F3F1F6" stroke="#D9D4E3" stroke-width="3"/>
+      <ellipse cx="120" cy="190" rx="16" ry="8" fill="#F3F1F6" stroke="#D9D4E3" stroke-width="3"/>`},
     { id:'tortoise', en:'Tortoise', sv:'Sköldpaddan', svg:`
       <ellipse cx="60" cy="176" rx="14" ry="12" fill="#8FBF6A"/><ellipse cx="150" cy="176" rx="14" ry="12" fill="#8FBF6A"/>
       <path d="M40 150 Q100 40 172 150 Z" fill="#6B8E3F"/>
       <path d="M52 146 Q100 66 160 146 Z" fill="#9BC46A"/>
-      <path d="M100 66 L100 146 M52 146 Q76 100 100 90 Q124 100 160 146 M70 146 Q100 116 132 146" stroke="#4A6A28" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M100 66 L100 146 M52 146 Q76 100 100 90 Q124 100 160 146 M70 146 Q100 116 132 146" stroke="#6B8E3F" stroke-width="3" fill="none" stroke-linecap="round"/>
       <rect x="34" y="146" width="144" height="20" rx="10" fill="#6B8E3F"/>
       <ellipse cx="82" cy="178" rx="16" ry="12" fill="#A9D08A"/><ellipse cx="128" cy="178" rx="16" ry="12" fill="#A9D08A"/>
       <path d="M176 150 q14 6 8 18" stroke="#8FBF6A" stroke-width="8" fill="none" stroke-linecap="round"/>
@@ -414,61 +436,109 @@
       <circle cx="30" cy="124" r="3" fill="#6B8E3F" opacity=".6"/>
       ${face(40,124,10,5,138)}`},
     { id:'duck', en:'Duck', sv:'Ankan', svg:`
-      <ellipse cx="108" cy="150" rx="56" ry="38" fill="#FFD84D" stroke="#B8860B" stroke-width="4"/>
-      <path d="M150 128 q24 -14 30 6 q-12 12 -30 8 Z" fill="#FFD84D" stroke="#B8860B" stroke-width="4"/>
+      <ellipse cx="108" cy="150" rx="56" ry="38" fill="#FFD84D" stroke="#E8B923" stroke-width="3"/>
+      <path d="M150 128 q24 -14 30 6 q-12 12 -30 8 Z" fill="#FFD84D" stroke="#E8B923" stroke-width="3"/>
       <ellipse cx="112" cy="152" rx="30" ry="18" fill="#FFE98A"/>
-      <circle cx="66" cy="94" r="38" fill="#FFD84D" stroke="#B8860B" stroke-width="4"/>
-      <path d="M30 100 q-22 6 -6 18 q14 6 24 -6 Z" fill="#F28C28"/>
-      <path d="M32 106 q-16 4 -4 10" stroke="#C86A14" stroke-width="2" fill="none"/>
+      <circle cx="66" cy="94" r="38" fill="#FFD84D" stroke="#E8B923" stroke-width="3"/>
+      <path d="M30 100 q-22 6 -6 18 q14 6 24 -6 Z" fill="#F28C28"/> <path d="M32 106 q-16 4 -4 10" stroke="#C86A14" stroke-width="2" fill="none"/>
       ${face(66,90,13,6,108).replace(/<path d="M57 108.*?\/>/,'').replace(/<ellipse class="mouth-open".*?\/>/,'')}
       <path d="M86 188 l-10 8 h22 Z M118 188 l-10 8 h22 Z" fill="#F28C28"/>
       <path d="M88 168 v20 M120 170 v18" stroke="#F28C28" stroke-width="5" stroke-linecap="round"/>`},
     { id:'cat', en:'Cat', sv:'Katten', svg:`
       <path d="M150 160 q40 -10 28 -46" stroke="#F0A050" stroke-width="12" fill="none" stroke-linecap="round"/>
-      <ellipse cx="100" cy="160" rx="46" ry="34" fill="#F5B26B" stroke="#9C5A1E" stroke-width="4"/>
-      <path d="M62 74 L70 34 L96 62 Z M138 74 L130 34 L104 62 Z" fill="#F5B26B" stroke="#9C5A1E" stroke-width="4" stroke-linejoin="round"/>
+      <ellipse cx="100" cy="160" rx="46" ry="34" fill="#F5B26B" stroke="#D88A3C" stroke-width="3"/>
+      <path d="M62 74 L70 34 L96 62 Z M138 74 L130 34 L104 62 Z" fill="#F5B26B" stroke="#D88A3C" stroke-width="3" stroke-linejoin="round"/>
       <path d="M70 66 L74 46 L88 62 Z M130 66 L126 46 L112 62 Z" fill="#F6B8C6"/>
-      <circle cx="100" cy="106" r="44" fill="#F5B26B" stroke="#9C5A1E" stroke-width="4"/>
-      <path d="M90 66 q10 -8 20 0 M80 72 q6 -6 10 0 M120 72 q-6 -6 -10 0" stroke="#9C5A1E" stroke-width="4" fill="none" stroke-linecap="round"/>
-      <path d="M100 116 l-5 -5 h10 Z" fill="#E58CA0"/>
-      <path d="M58 118 L84 116 M58 128 L84 122 M142 118 L116 116 M142 128 L116 122" stroke="#B36A2A" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="100" cy="106" r="44" fill="#F5B26B" stroke="#D88A3C" stroke-width="3"/>
+      <path d="M90 66 q10 -8 20 0 M80 72 q6 -6 10 0 M120 72 q-6 -6 -10 0" stroke="#D88A3C" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M100 116 l-5 -5 h10 Z" fill="#E58CA0"/> <path d="M58 118 L84 116 M58 128 L84 122 M142 118 L116 116 M142 128 L116 122" stroke="#B36A2A" stroke-width="2" stroke-linecap="round"/>
       ${face(100,100,17,7,118)}
-      <ellipse cx="76" cy="192" rx="16" ry="7" fill="#F5B26B" stroke="#9C5A1E" stroke-width="4"/>
-      <ellipse cx="124" cy="192" rx="16" ry="7" fill="#F5B26B" stroke="#9C5A1E" stroke-width="4"/>`},
+      <ellipse cx="76" cy="192" rx="16" ry="7" fill="#F5B26B" stroke="#D88A3C" stroke-width="3"/>
+      <ellipse cx="124" cy="192" rx="16" ry="7" fill="#F5B26B" stroke="#D88A3C" stroke-width="3"/>`},
     { id:'frog', en:'Frog', sv:'Grodan', svg:`
-      <ellipse cx="100" cy="140" rx="62" ry="50" fill="#6FC46A" stroke="#2F6E2C" stroke-width="4"/>
+      <ellipse cx="100" cy="140" rx="62" ry="50" fill="#6FC46A" stroke="#4C9E47" stroke-width="3"/>
       <ellipse cx="100" cy="158" rx="40" ry="26" fill="#C9F0A8"/>
-      <circle cx="66" cy="84" r="24" fill="#6FC46A" stroke="#2F6E2C" stroke-width="4"/>
-      <circle cx="134" cy="84" r="24" fill="#6FC46A" stroke="#2F6E2C" stroke-width="4"/>
-      <circle cx="66" cy="84" r="14" fill="#fff"/><circle cx="134" cy="84" r="14" fill="#fff"/>
-      <circle class="eye" cx="68" cy="86" r="8" fill="#22335A"/><circle class="eye" cx="132" cy="86" r="8" fill="#22335A"/>
-      <circle cx="80" cy="122" r="4" fill="#4C9E47"/><circle cx="120" cy="122" r="4" fill="#4C9E47"/>
-      <path d="M70 134 Q100 162 130 134" stroke="#22335A" stroke-width="4" fill="none" stroke-linecap="round"/>
-      <ellipse class="mouth-open" cx="100" cy="144" rx="14" ry="8" fill="#B23B4A"/>
-      <path d="M48 178 q-20 14 -4 18 q14 2 22 -10 M152 178 q20 14 4 18 q-14 2 -22 -10" fill="#6FC46A" stroke="#2F6E2C" stroke-width="4"/>`},
+      <circle cx="66" cy="84" r="24" fill="#6FC46A" stroke="#4C9E47" stroke-width="3"/>
+      <circle cx="134" cy="84" r="24" fill="#6FC46A" stroke="#4C9E47" stroke-width="3"/>
+      <circle cx="66" cy="84" r="14" fill="#fff"/><circle cx="134" cy="84" r="14" fill="#fff"/> <circle class="eye" cx="68" cy="86" r="8" fill="#22335A"/><circle class="eye" cx="132" cy="86" r="8" fill="#22335A"/> <circle cx="80" cy="122" r="4" fill="#4C9E47"/><circle cx="120" cy="122" r="4" fill="#4C9E47"/> <path d="M70 134 Q100 162 130 134" stroke="#22335A" stroke-width="3" fill="none" stroke-linecap="round"/> <ellipse class="mouth-open" cx="100" cy="144" rx="14" ry="8" fill="#B23B4A"/>
+      <path d="M48 178 q-20 14 -4 18 q14 2 22 -10 M152 178 q20 14 4 18 q-14 2 -22 -10" fill="#6FC46A" stroke="#4C9E47" stroke-width="3"/>`},
     { id:'elephant', en:'Elephant', sv:'Elefanten', svg:`
-      <ellipse cx="110" cy="150" rx="58" ry="42" fill="#A8B4D6" stroke="#4D5C8E" stroke-width="4"/>
-      <rect x="66" y="160" width="20" height="34" rx="10" fill="#A8B4D6" stroke="#4D5C8E" stroke-width="4"/>
-      <rect x="128" y="160" width="20" height="34" rx="10" fill="#A8B4D6" stroke="#4D5C8E" stroke-width="4"/>
-      <path d="M164 140 q16 10 6 26" stroke="#4D5C8E" stroke-width="6" fill="none" stroke-linecap="round"/>
-      <circle cx="46" cy="98" r="30" fill="#C4CDE6" stroke="#4D5C8E" stroke-width="4"/>
+      <ellipse cx="110" cy="150" rx="58" ry="42" fill="#A8B4D6" stroke="#7F8DB8" stroke-width="3"/>
+      <rect x="66" y="160" width="20" height="34" rx="10" fill="#A8B4D6" stroke="#7F8DB8" stroke-width="3"/>
+      <rect x="128" y="160" width="20" height="34" rx="10" fill="#A8B4D6" stroke="#7F8DB8" stroke-width="3"/>
+      <path d="M164 140 q16 10 6 26" stroke="#7F8DB8" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <circle cx="46" cy="98" r="30" fill="#C4CDE6" stroke="#7F8DB8" stroke-width="3"/>
       <circle cx="46" cy="98" r="18" fill="#F6B8C6" opacity=".7"/>
-      <circle cx="132" cy="98" r="30" fill="#C4CDE6" stroke="#4D5C8E" stroke-width="4"/>
+      <circle cx="132" cy="98" r="30" fill="#C4CDE6" stroke="#7F8DB8" stroke-width="3"/>
       <circle cx="132" cy="98" r="18" fill="#F6B8C6" opacity=".7"/>
-      <circle cx="90" cy="100" r="44" fill="#A8B4D6" stroke="#4D5C8E" stroke-width="4"/>
+      <circle cx="90" cy="100" r="44" fill="#A8B4D6" stroke="#7F8DB8" stroke-width="3"/>
       <path d="M92 124 q-6 30 12 54 q14 14 26 2" stroke="#A8B4D6" stroke-width="18" fill="none" stroke-linecap="round"/>
-      <path d="M92 124 q-6 30 12 54 q14 14 26 2" stroke="#4D5C8E" stroke-width="4" fill="none" stroke-linecap="round" opacity=".5"/>
+      <path d="M92 124 q-6 30 12 54 q14 14 26 2" stroke="#7F8DB8" stroke-width="3" fill="none" stroke-linecap="round" opacity=".5"/>
       ${face(90,96,17,7,118).replace(/<path d="M81 118.*?\/>/,'').replace(/<ellipse class="mouth-open".*?\/>/,'')}
-      <path d="M60 128 q6 8 14 6" stroke="#22335A" stroke-width="4" fill="none" stroke-linecap="round"/>`},
+      <path d="M60 128 q6 8 14 6" stroke="#22335A" stroke-width="3" fill="none" stroke-linecap="round"/>`},
     { id:'penguin', en:'Penguin', sv:'Pingvinen', svg:`
-      <ellipse cx="100" cy="128" rx="54" ry="66" fill="#2E3A59" stroke="#0F1526" stroke-width="4"/>
+      <ellipse cx="100" cy="128" rx="54" ry="66" fill="#2E3A59" stroke="#1E2740" stroke-width="3"/>
       <ellipse cx="100" cy="140" rx="38" ry="48" fill="#F7F9FF"/>
-      <path d="M46 120 q-16 40 6 60 q8 -30 6 -60 Z M154 120 q16 40 -6 60 q-8 -30 -6 -60 Z" fill="#2E3A59" stroke="#0F1526" stroke-width="4"/>
+      <path d="M46 120 q-16 40 6 60 q8 -30 6 -60 Z M154 120 q16 40 -6 60 q-8 -30 -6 -60 Z" fill="#2E3A59" stroke="#1E2740" stroke-width="3"/>
       <ellipse cx="82" cy="192" rx="18" ry="8" fill="#F28C28"/><ellipse cx="118" cy="192" rx="18" ry="8" fill="#F28C28"/>
       <ellipse cx="100" cy="90" rx="30" ry="24" fill="#F7F9FF"/>
-      <path d="M90 104 l10 12 l10 -12 Z" fill="#F28C28"/>
-      <circle cx="74" cy="104" r="6" fill="#F6B8C6" opacity=".8"/><circle cx="126" cy="104" r="6" fill="#F6B8C6" opacity=".8"/>
+      <path d="M90 104 l10 12 l10 -12 Z" fill="#F28C28"/> <circle cx="74" cy="104" r="6" fill="#F6B8C6" opacity=".8"/><circle cx="126" cy="104" r="6" fill="#F6B8C6" opacity=".8"/>
       ${face(100,88,14,6,100).replace(/<path d="M91 100.*?\/>/,'').replace(/<ellipse class="mouth-open".*?\/>/,'')}`},
+    { id:'bear', en:'Bear', sv:'Björnen', svg:`
+      <circle cx="62" cy="70" r="18" fill="#D2A26E" stroke="#B98652" stroke-width="3"/>
+      <circle cx="138" cy="70" r="18" fill="#D2A26E" stroke="#B98652" stroke-width="3"/>
+      <circle cx="62" cy="70" r="8" fill="#F3DDBF"/><circle cx="138" cy="70" r="8" fill="#F3DDBF"/>
+      <ellipse cx="100" cy="158" rx="50" ry="38" fill="#D2A26E" stroke="#B98652" stroke-width="3"/>
+      <ellipse cx="100" cy="164" rx="28" ry="20" fill="#F3DDBF"/>
+      <circle cx="100" cy="104" r="46" fill="#D2A26E" stroke="#B98652" stroke-width="3"/>
+      <ellipse cx="100" cy="122" rx="20" ry="14" fill="#F3DDBF"/> <ellipse cx="100" cy="116" rx="8" ry="5.5" fill="#6B4A36"/>
+      ${face(100,96,17,7,126)}
+      <ellipse cx="72" cy="192" rx="18" ry="8" fill="#D2A26E" stroke="#B98652" stroke-width="3"/>
+      <ellipse cx="128" cy="192" rx="18" ry="8" fill="#D2A26E" stroke="#B98652" stroke-width="3"/>`},
+    { id:'pig', en:'Pig', sv:'Grisen', svg:`
+      <path d="M58 76 L52 40 L84 62 Z M142 76 L148 40 L116 62 Z" fill="#F5A9BC" stroke="#E08AA3" stroke-width="3" stroke-linejoin="round"/>
+      <ellipse cx="100" cy="158" rx="52" ry="38" fill="#F5A9BC" stroke="#E08AA3" stroke-width="3"/>
+      <path d="M150 150 q16 -10 8 -22 q-8 -4 -10 6" fill="none" stroke="#E08AA3" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="100" cy="104" r="46" fill="#F5A9BC" stroke="#E08AA3" stroke-width="3"/>
+      <ellipse cx="100" cy="122" rx="20" ry="13" fill="#E88AA3" stroke="#E08AA3" stroke-width="3"/> <ellipse cx="93" cy="122" rx="3.5" ry="5" fill="#C9738F"/><ellipse cx="107" cy="122" rx="3.5" ry="5" fill="#C9738F"/>
+      ${face(100,96,18,7,124).replace(/<path d="M91 124.*?\/>/,'').replace(/<ellipse class="mouth-open".*?\/>/,'')}
+      <path d="M84 140 q16 10 32 0" stroke="#22335A" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <ellipse cx="74" cy="192" rx="16" ry="8" fill="#E88AA3" stroke="#E08AA3" stroke-width="3"/>
+      <ellipse cx="126" cy="192" rx="16" ry="8" fill="#E88AA3" stroke="#E08AA3" stroke-width="3"/>`},
+    { id:'fox', en:'Fox', sv:'Räven', svg:`
+      <path d="M140 170 q40 -10 34 -50 q-6 -14 -20 -4 q-6 30 -30 40 Z" fill="#F5A15C" stroke="#DB8A45" stroke-width="3"/>
+      <path d="M160 132 q12 -8 14 -12 q-2 24 -18 34 Z" fill="#FFF3E6"/>
+      <ellipse cx="100" cy="160" rx="46" ry="36" fill="#F5A15C" stroke="#DB8A45" stroke-width="3"/>
+      <ellipse cx="100" cy="168" rx="24" ry="20" fill="#FFF3E6"/>
+      <path d="M56 84 L60 30 L96 66 Z M144 84 L140 30 L104 66 Z" fill="#F5A15C" stroke="#DB8A45" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M64 76 L66 46 L86 66 Z M136 76 L134 46 L114 66 Z" fill="#8A5A42"/>
+      <path d="M56 96 Q100 60 144 96 Q140 150 100 152 Q60 150 56 96 Z" fill="#F5A15C" stroke="#DB8A45" stroke-width="3"/>
+      <path d="M72 118 Q100 104 128 118 Q124 148 100 152 Q76 148 72 118 Z" fill="#FFF3E6"/>
+      <ellipse cx="100" cy="140" rx="6" ry="4.5" fill="#8A5A42"/>
+      ${face(100,108,18,7,144).replace(/<path d="M91 144.*?\/>/,'').replace(/<ellipse class="mouth-open".*?\/>/,'')}
+      <ellipse cx="76" cy="194" rx="14" ry="7" fill="#8A5A42"/><ellipse cx="124" cy="194" rx="14" ry="7" fill="#8A5A42"/>`},
+    { id:'owl', en:'Owl', sv:'Ugglan', svg:`
+      <path d="M62 62 L54 30 L82 52 Z M138 62 L146 30 L118 52 Z" fill="#D8B285" stroke="#BE9468" stroke-width="3" stroke-linejoin="round"/>
+      <ellipse cx="100" cy="122" rx="58" ry="68" fill="#D8B285" stroke="#BE9468" stroke-width="3"/>
+      <path d="M46 110 q-14 40 8 66 q6 -34 4 -66 Z M154 110 q14 40 -8 66 q-6 -34 -4 -66 Z" fill="#C39A6C" stroke="#BE9468" stroke-width="3"/>
+      <ellipse cx="100" cy="150" rx="34" ry="30" fill="#F6E8D2"/>
+      <path d="M78 140 q6 6 12 0 M94 140 q6 6 12 0 M110 140 q6 6 12 0 M86 156 q6 6 12 0 M102 156 q6 6 12 0" stroke="#D8B285" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="74" cy="96" r="26" fill="#FFFBF3" stroke="#BE9468" stroke-width="3"/> <circle cx="126" cy="96" r="26" fill="#FFFBF3" stroke="#BE9468" stroke-width="3"/> <circle class="eye" cx="74" cy="98" r="12" fill="#22335A"/><circle class="eye" cx="126" cy="98" r="12" fill="#22335A"/> <circle cx="78" cy="93" r="4" fill="#fff"/><circle cx="130" cy="93" r="4" fill="#fff"/> <path d="M92 112 L100 128 L108 112 Z" fill="#F28C28" stroke="#BE9468" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M80 190 l-8 8 M80 190 v10 M80 190 l8 8 M120 190 l-8 8 M120 190 v10 M120 190 l8 8" stroke="#F28C28" stroke-width="5" stroke-linecap="round"/>`},
+    { id:'monkey', en:'Monkey', sv:'Apan', svg:`
+      <path d="M144 160 q40 6 30 -40 q-4 -12 -14 -4 q6 26 -20 34" fill="none" stroke="#B98A66" stroke-width="9" stroke-linecap="round"/>
+      <path d="M144 160 q40 6 30 -40 q-4 -12 -14 -4 q6 26 -20 34" fill="none" stroke="#9C6E4C" stroke-width="3" stroke-linecap="round" opacity=".5"/>
+      <ellipse cx="100" cy="158" rx="46" ry="36" fill="#B98A66" stroke="#9C6E4C" stroke-width="3"/>
+      <ellipse cx="100" cy="166" rx="26" ry="20" fill="#F5DEC2"/>
+      <circle cx="52" cy="102" r="20" fill="#B98A66" stroke="#9C6E4C" stroke-width="3"/>
+      <circle cx="148" cy="102" r="20" fill="#B98A66" stroke="#9C6E4C" stroke-width="3"/>
+      <circle cx="52" cy="102" r="10" fill="#F5DEC2"/><circle cx="148" cy="102" r="10" fill="#F5DEC2"/>
+      <circle cx="100" cy="104" r="46" fill="#B98A66" stroke="#9C6E4C" stroke-width="3"/>
+      <path d="M62 112 Q66 76 100 78 Q134 76 138 112 Q136 146 100 148 Q64 146 62 112 Z" fill="#F5DEC2"/>
+      <ellipse cx="94" cy="122" rx="3" ry="4" fill="#7A5238"/><ellipse cx="106" cy="122" rx="3" ry="4" fill="#7A5238"/>
+      ${face(100,102,17,7,132)}
+      <ellipse cx="76" cy="192" rx="16" ry="8" fill="#B98A66" stroke="#9C6E4C" stroke-width="3"/>
+      <ellipse cx="124" cy="192" rx="16" ry="8" fill="#B98A66" stroke="#9C6E4C" stroke-width="3"/>`},
   ];
   const svgWrap = inner => `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${inner}</svg>`;
 
@@ -489,11 +559,18 @@
   let busy = false;
 
   /* ---------- Audio ---------- */
-  let ctx = null;
+  let ctx = null, master = null;
+  const BOOST = 2.4; // overall loudness multiplier; the compressor below keeps it clean
   function ac(){
     if (!settings.sound) return null;
     try {
-      if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+      if (!ctx){
+        ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const comp = ctx.createDynamicsCompressor();
+        comp.threshold.value = -14; comp.knee.value = 12; comp.ratio.value = 8; comp.attack.value = 0.003; comp.release.value = 0.2;
+        master = ctx.createGain(); master.gain.value = 1.0;
+        master.connect(comp).connect(ctx.destination);
+      }
       if (ctx.state === 'suspended') ctx.resume();
       return ctx;
     } catch(e){ return null; }
@@ -502,13 +579,13 @@
     const c = ac(); if (!c) return;
     const {type='sine', vol=0.18, when=0, to=null} = opts;
     const o = c.createOscillator(), g = c.createGain();
-    const t0 = c.currentTime + when;
+    const t0 = c.currentTime + when, v = Math.min(vol * BOOST, 0.95);
     o.type = type; o.frequency.setValueAtTime(freq, t0);
     if (to) o.frequency.exponentialRampToValueAtTime(to, t0 + dur);
     g.gain.setValueAtTime(0.0001, t0);
-    g.gain.exponentialRampToValueAtTime(vol, t0 + 0.02);
+    g.gain.exponentialRampToValueAtTime(v, t0 + 0.02);
     g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
-    o.connect(g).connect(c.destination); o.start(t0); o.stop(t0 + dur + 0.05);
+    o.connect(g).connect(master); o.start(t0); o.stop(t0 + dur + 0.05);
   }
   function whoosh(dur=1.8, when=0){
     const c = ac(); if (!c) return;
@@ -518,17 +595,51 @@
     const f = c.createBiquadFilter(); f.type='bandpass'; f.Q.value = 1.2;
     const g = c.createGain(); const t0 = c.currentTime + when;
     f.frequency.setValueAtTime(300, t0); f.frequency.exponentialRampToValueAtTime(2600, t0 + dur*0.5); f.frequency.exponentialRampToValueAtTime(300, t0 + dur);
-    g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.25, t0+0.1); g.gain.exponentialRampToValueAtTime(0.0001, t0+dur);
-    src.connect(f).connect(g).connect(c.destination); src.start(t0); src.stop(t0+dur);
+    g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.5, t0+0.1); g.gain.exponentialRampToValueAtTime(0.0001, t0+dur);
+    src.connect(f).connect(g).connect(master); src.start(t0); src.stop(t0+dur);
   }
   const N = {C4:261.6,D4:293.7,E4:329.6,F4:349.2,G4:392,A4:440,B4:493.9,C5:523.3,D5:587.3,E5:659.3,G5:784,C6:1046.5};
   const SFX = {
-    spin(){ whoosh(2.5); whoosh(2.5, 2.5); tone(N.C5,.25,{when:4.6}); tone(N.E5,.3,{when:4.75}); },
-    jump(){ for (let i=0;i<5;i++){ tone(520,.32,{type:'triangle',vol:.22,when:i*1+0.1,to:130}); tone(900,.12,{when:i*1+0.5,vol:.08,to:1400}); } },
-    roll(){ for (let i=0;i<18;i++) tone(70+ (i%2)*20, .22, {type:'triangle',vol:.16,when:i*0.25}); tone(N.G5,.3,{when:4.7}); },
+    // Spin: a slide-whistle spiral climbing with every turn, a pop at the top of each, then a sparkle
+    spin(){
+      whoosh(2.5, 0); whoosh(2.5, 2.5);
+      for (let i=0;i<4;i++){
+        tone(N.C5*(1+i*0.12), 1.0, {type:'square', vol:.14, when:i*1.25, to:N.C6*(1+i*0.12)});
+        tone(N.G5, .1, {type:'triangle', vol:.2, when:i*1.25+1.05});
+      }
+      [N.C6,N.E5*2,N.G5*2].forEach((f,i)=>tone(f,.35,{when:4.55+i*.1,vol:.18}));
+    },
+    // Jump: cartoon spring — a rising "whip" on take-off, a ding at the top, a rubbery boing on landing
+    jump(){
+      for (let i=0;i<5;i++){
+        const t0 = i*1;
+        tone(160, .3, {type:'sawtooth', vol:.16, when:t0+0.02, to:1100});
+        tone(N.E5*2, .18, {type:'triangle', vol:.2, when:t0+0.42});
+        tone(420, .38, {type:'square', vol:.16, when:t0+0.9, to:110});
+        tone(210, .25, {type:'sine', vol:.22, when:t0+0.92, to:80});
+      }
+    },
+    // Roll: a wobbly siren that follows the tumble, with bouncy tumble-pops on every quarter turn
+    roll(){
+      for (const base of [0, 2.5]){
+        tone(330, 1.25, {type:'triangle', vol:.16, when:base, to:660});
+        tone(660, 1.25, {type:'triangle', vol:.16, when:base+1.25, to:330});
+      }
+      for (let i=0;i<20;i++) tone(i%2 ? 330 : 220, .12, {type:'square', vol:.14, when:i*0.25+0.05, to:(i%2 ? 250 : 170)});
+      [N.G5,N.C6].forEach((f,i)=>tone(f,.35,{when:4.6+i*.12,vol:.18}));
+    },
     grow(){ for (const base of [0, 2.5]){ [N.C4,N.E4,N.G4,N.C5,N.E5,N.G5].forEach((f,i)=>tone(f,.3,{when:base+i*.16,vol:.16})); [N.G5,N.E5,N.C5].forEach((f,i)=>tone(f,.3,{when:base+1.6+i*.18,vol:.14})); } },
     dance(){ const m=[N.C5,N.E5,N.G5,N.E5,N.D5,N.F4,N.A4,N.F4,N.C5,N.E5,N.G5,N.E5,N.D5,N.B4,N.G4,N.B4,N.C5,N.E5,N.G5,N.C6]; m.forEach((f,i)=>tone(f,.22,{type:'triangle',vol:.16,when:i*.25})); },
     flip(){ for (const base of [0, 2.5]){ tone(260,1.1,{vol:.18,when:base,to:1400}); tone(N.C6,.5,{when:base+1.35,vol:.16}); tone(N.E5,.4,{when:base+1.55,vol:.12}); } },
+    // Exit: two boings, a rising whoosh as it hops away, then boings coming back in and a landing chime
+    exit(){
+      const boing = t0 => { tone(160,.25,{type:'sawtooth',vol:.14,when:t0,to:900}); tone(420,.35,{type:'square',vol:.15,when:t0+0.45,to:110}); };
+      boing(0.15); boing(0.9);
+      tone(160,.3,{type:'sawtooth',vol:.14,when:1.65,to:1200}); tone(400, 0.6, {type:'triangle', vol:.16, when:1.8, to:1600}); whoosh(0.7, 1.7);
+      const hop = t0 => { tone(240,.14,{type:'sawtooth',vol:.12,when:t0,to:800}); tone(520,.2,{type:'square',vol:.13,when:t0+0.22,to:160}); };
+      hop(2.3); hop(2.85); hop(3.4); hop(3.95);
+      [N.C5,N.E5,N.G5,N.C6].forEach((f,i)=>tone(f,.3,{when:4.5+i*.09,vol:.18}));
+    },
     hello(){ tone(N.E5,.12,{vol:.14}); tone(N.G5,.2,{when:.12,vol:.14}); },
     click(){ tone(1200,.05,{vol:.06}); },
     fanfare(){ [N.C5,N.C5,N.C5,N.E5,N.G5,N.C6].forEach((f,i)=>tone(f, i<3?.14:.4, {type:'triangle',vol:.2,when:[0,.15,.3,.45,.75,1.1][i]})); [N.E5,N.G5,N.C6].forEach((f,i)=>tone(f,1.2,{vol:.08,when:1.1+i*.02})); },
@@ -599,7 +710,6 @@
         </div>
         <div class="track"><div class="fill"></div><div class="hint"></div><div class="knob" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">${s.icon}</div></div>`;
       host.appendChild(el);
-      el.querySelector('.step-name button').addEventListener('click', ()=>{ SFX.click(); speak(stepName(s)); });
       attachSlider(el, i);
     });
     $('#stars').innerHTML = STEPS.map(()=>'<span>⭐</span>').join('');
@@ -647,35 +757,33 @@
   }
 
   /* ---------- Actions ---------- */
-  function playAnim(name, cb){
+  function playAnim(name, cb, sfx){
     wrap.className = 'animal-wrap'; void wrap.offsetWidth;
     wrap.classList.add('anim-' + name); animalEl.classList.add('happy');
-    if (SFX[name]) SFX[name]();
+    const s = sfx || name; if (SFX[s]) SFX[s]();
     setTimeout(()=>{ wrap.className='animal-wrap'; animalEl.classList.remove('happy'); cb && cb(); }, ANIM_MS[name] || 1500);
   }
   function complete(i){
     const s = STEPS[i]; if (day.done.includes(s.id)) return;
     busy = true; day.done.push(s.id); save('mf_day', day); renderProgress();
-    speak(pick(t().praise), 150);
     playAnim(s.anim, () => {
       busy = false;
       const remaining = STEPS.filter(x => !day.done.includes(x.id));
       if (!remaining.length) finale();
-      else speak(t().next + stepName(remaining[0]));
-    });
+    }, s.sfx);
   }
   function finale(){
     const a = ANIMALS[animalIdx()];
-    $('#finale').hidden = false; SFX.fanfare(); speak(t().finaleSay, 300); confetti();
+    $('#finale').hidden = false; SFX.fanfare(); confetti();
     wrap.className = 'animal-wrap'; void wrap.offsetWidth; wrap.classList.add('anim-dance'); animalEl.classList.add('happy');
     setTimeout(()=>{ wrap.className='animal-wrap'; animalEl.classList.remove('happy'); }, 4000);
   }
   $('#finale').addEventListener('click', ()=>{ $('#finale').hidden = true; });
 
-  animalEl.addEventListener('click', ()=>{ if (busy) return; const a = ANIMALS[animalIdx()]; playAnim('hello'); speak(t().todayIs(animalName(a))); });
+  animalEl.addEventListener('click', ()=>{ if (busy) return; playAnim('hello'); });
   animalEl.addEventListener('keydown', e=>{ if (e.key==='Enter'||e.key===' '){ e.preventDefault(); animalEl.click(); } });
 
-  document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', ()=>{ settings.lang = b.dataset.lang; save('mf_settings', settings); SFX.click(); renderAnimal(); renderText(); speak(t().greet); }));
+  document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', ()=>{ settings.lang = b.dataset.lang; save('mf_settings', settings); SFX.click(); renderAnimal(); renderText(); }));
   $('#sound').addEventListener('click', ()=>{
     settings.sound = !settings.sound; save('mf_settings', settings);
     $('#sound').textContent = settings.sound ? '🔊' : '🔇'; $('#sound').setAttribute('aria-pressed', String(settings.sound));
