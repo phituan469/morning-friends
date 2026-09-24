@@ -61,8 +61,9 @@
     position:absolute;inset:0 0 auto 0;display:flex;align-items:center;justify-content:space-between;
     padding:calc(12px + env(safe-area-inset-top,0px)) 16px 0;gap:12px;z-index:3;
   }
-  .greet{font-family:"Fredoka",sans-serif;font-weight:700;font-size:clamp(20px,4.5vw,28px);line-height:1.1;}
-  .greet small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:13px;color:var(--muted);margin-top:2px;letter-spacing:.02em}
+  .greet{font-family:"Fredoka",sans-serif;font-weight:700;font-size:clamp(17px,4.5vw,28px);line-height:1.1;}
+  .pill button.emoji{padding:0 8px;font-size:15px}
+  .greet small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:13px;color:var(--muted);margin-top:2px;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .controls{display:flex;gap:8px;align-items:center}
   .pill{
     display:inline-flex;align-items:center;background:var(--card);border:2px solid var(--border);border-radius:999px;
@@ -168,7 +169,9 @@
   @keyframes hello{0%,100%{transform:translateX(-50%) rotate(0)}25%{transform:translateX(-50%) rotate(-8deg) scale(1.06)}75%{transform:translateX(-50%) rotate(8deg) scale(1.06)}}
   @media (prefers-reduced-motion:reduce){
     .animal,.sun,.cloud{animation:none}
-    .anim-spin,.anim-jump,.anim-roll,.anim-rollback,.anim-grow,.anim-dance,.anim-flip,.anim-exit{animation:hello .9s ease-in-out 1}
+    .anim-spin,.anim-jump,.anim-roll,.anim-rollback,.anim-grow,.anim-dance,.anim-flip,.anim-exit,
+    .anim-hero-stomp{animation:hello .9s ease-in-out 1}
+    .cape{animation:none}
   }
 
   .friend-tag{
@@ -275,6 +278,98 @@
   .finale-card .stars span:nth-child(odd){animation-delay:.6s}
   @keyframes twinkle{0%,100%{transform:scale(1)}50%{transform:scale(1.25) rotate(10deg)}}
   #confetti{position:fixed;inset:0;z-index:16;pointer-events:none}
+
+  /* ---------- Night routine ---------- */
+  body.night{
+    color-scheme:dark;
+    --sky:#0B1633; --sky2:#152343; --card:#1B2A4A; --ink:#EEF3FF; --muted:#A5B3D1;
+    --sun:#FFD36B; --sun-soft:#3A3350; --track:#2A3B60; --knob:#F3F6FF; --border:#33477A; --shadow:0 6px 18px rgba(0,0,0,.35);
+    --done:#3FBF7F; --done-ink:#EAFFF3; --hill:#1E4A3A; --hill2:#16392D; --panel:#1B2A4A;
+  }
+  body.night .sun,body.night .cloud{display:none}
+  /* Superhero friend: hovers in the sky at night, cape and mask on */
+  body.night .animal-wrap{left:22%;top:15%;bottom:auto;width:min(27vw,135px);z-index:3}
+  body.night .animal{animation:hover 2.6s ease-in-out infinite}
+  @keyframes hover{0%,100%{transform:translateY(0)}50%{transform:translateY(-8%)}}
+  .cape,.mask{display:none}
+  body.night .cape,body.night .mask{display:block}
+  #animal-picker .cape,#animal-picker .mask{display:none}
+  .cape{transform-box:fill-box;transform-origin:100% 0;animation:flutter .9s ease-in-out infinite}
+  @keyframes flutter{0%,100%{transform:skewY(0) scaleX(1)}50%{transform:skewY(7deg) scaleX(1.14)}}
+  body.asleep .eye{transform:scaleY(.18)}
+  .animal-wrap.on-moon{transform:translate(calc(-50% + 56cqw), -6cqw) scale(.7)}
+  /* Roof stomp (5.6s): fly to the step's house, land on the roof, jump four times, fly home.
+     --dx is the horizontal offset to that house, set by script */
+  .anim-hero-stomp{animation:heroStomp 5.6s ease-in-out 1}
+  @keyframes heroStomp{
+    0%  {transform:translate(-50%,0) rotate(0) scaleY(1)}
+    8%  {transform:translate(calc(-50% - 6cqw),-4cqh) rotate(-14deg) scaleY(1)}
+    21% {transform:translate(calc(-50% + var(--dx,0cqw)),6cqh) rotate(0) scaleY(1)}
+    23% {transform:translate(calc(-50% + var(--dx,0cqw)),7.5cqh) rotate(0) scaleY(.88)}
+    28% {transform:translate(calc(-50% + var(--dx,0cqw)),-12cqh) rotate(0) scaleY(1.06)}
+    35% {transform:translate(calc(-50% + var(--dx,0cqw)),6cqh) rotate(0) scaleY(1)}
+    37% {transform:translate(calc(-50% + var(--dx,0cqw)),7.5cqh) rotate(0) scaleY(.88)}
+    42% {transform:translate(calc(-50% + var(--dx,0cqw)),-12cqh) rotate(0) scaleY(1.06)}
+    49% {transform:translate(calc(-50% + var(--dx,0cqw)),6cqh) rotate(0) scaleY(1)}
+    51% {transform:translate(calc(-50% + var(--dx,0cqw)),7.5cqh) rotate(0) scaleY(.88)}
+    56% {transform:translate(calc(-50% + var(--dx,0cqw)),-12cqh) rotate(0) scaleY(1.06)}
+    63% {transform:translate(calc(-50% + var(--dx,0cqw)),6cqh) rotate(0) scaleY(1)}
+    65% {transform:translate(calc(-50% + var(--dx,0cqw)),7.5cqh) rotate(0) scaleY(.88)}
+    70% {transform:translate(calc(-50% + var(--dx,0cqw)),-12cqh) rotate(0) scaleY(1.06)}
+    78% {transform:translate(calc(-50% + var(--dx,0cqw)),6cqh) rotate(0) scaleY(1)}
+    88% {transform:translate(calc(-50% + var(--dx,0cqw) * .4),-6cqh) rotate(-16deg) scaleY(1)}
+    100%{transform:translate(-50%,0) rotate(0) scaleY(1)}
+  }
+  .house{transform-box:fill-box;transform-origin:50% 100%}
+  .house.stomp{animation:hstomp .38s ease-out 1}
+  @keyframes hstomp{0%{transform:scaleY(1)}35%{transform:scaleY(.93) scaleX(1.03)}100%{transform:scaleY(1)}}
+  .anim-hero-land{animation:heroLand 2.6s ease-in-out 1 forwards}
+  @keyframes heroLand{
+    0%  {transform:translate(-50%,0) rotate(0) scale(1)}
+    45% {transform:translate(calc(-50% + 30cqw),-14cqh) rotate(-16deg) scale(.9)}
+    100%{transform:translate(calc(-50% + 56cqw),-6cqw) rotate(0) scale(.7)}
+  }
+  .night-only{display:none}
+  body.night .night-only{display:block}
+  .starfield{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+  .starfield i{position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;animation:tw 3s ease-in-out infinite}
+  @keyframes tw{0%,100%{opacity:.25;transform:scale(.8)}50%{opacity:1;transform:scale(1.25)}}
+  .moon{position:absolute;right:12%;top:15%;width:min(19vw,92px);aspect-ratio:1;filter:drop-shadow(0 0 22px rgba(255,241,184,.45))}
+  .moon svg{width:100%;height:100%;display:block;overflow:visible}
+  .moon .zz{opacity:0;transition:opacity .8s}
+  .moon .awake{transition:opacity .8s}
+  body.asleep .moon .awake{opacity:0}
+  body.asleep .moon .zz{opacity:1}
+  .town{position:absolute;left:0;right:0;bottom:4%;height:54%;z-index:2}
+  .town svg{width:100%;height:100%;display:block;overflow:visible}
+  /* A lit house is bright all over; when it sleeps the whole house — walls, roof, door, windows — goes dark */
+  .house .wall{fill:var(--wall);transition:fill .9s ease}
+  .house .roof{fill:var(--roof);transition:fill .9s ease}
+  .house .door{fill:var(--door);transition:fill .9s ease}
+  .house .bars{stroke:var(--wall);transition:stroke .9s ease}
+  .house.off .wall{fill:var(--wall-d)}
+  .house.off .roof{fill:var(--roof-d)}
+  .house.off .door{fill:var(--door-d)}
+  .house.off .bars{stroke:var(--wall-d)}
+  .win{fill:#FFE27A;stroke:#111;stroke-width:1.2;transition:fill .8s ease}
+  .win.off{fill:#1A2540}
+  .glow{fill:#FFD36B;opacity:.42;transition:opacity .9s ease}
+  .glow.off{opacity:0}
+  .ring{fill:none;stroke:#D5DDEE;stroke-width:3;opacity:0;transform-box:fill-box;transform-origin:center}
+  .ring.puff{animation:puff 2.8s ease-out forwards}
+  @keyframes puff{0%{opacity:0;transform:translateY(0) scale(.35)}12%{opacity:.85}100%{opacity:0;transform:translateY(-62px) scale(1.9)}}
+  .zzz{position:absolute;left:50%;top:22%;transform:translateX(-50%);font-family:"Fredoka",sans-serif;font-weight:700;color:#EEF3FF;pointer-events:none;opacity:0;transition:opacity 1s}
+  body.asleep .zzz{opacity:1}
+  .zzz span{position:absolute;left:0;animation:zfloat 3.6s ease-out infinite}
+  .zzz span:nth-child(1){font-size:18px;left:-40px;animation-delay:0s}
+  .zzz span:nth-child(2){font-size:24px;left:-6px;animation-delay:1.2s}
+  .zzz span:nth-child(3){font-size:30px;left:34px;animation-delay:2.4s}
+  @keyframes zfloat{0%{opacity:0;transform:translateY(20px) rotate(-8deg)}20%{opacity:.95}100%{opacity:0;transform:translateY(-60px) rotate(10deg)}}
+  #stage::after{content:"";position:absolute;inset:0;background:#050A19;opacity:0;pointer-events:none;transition:opacity 2s;z-index:1}
+  body.night.asleep #stage::after{opacity:.38}
+  body:not(.night) #stage::after{transition:none}
+  body.asleep .starfield i{animation-duration:6s}
+  .greet{min-width:0}
 </style>
 </head>
 <body>
@@ -284,6 +379,10 @@
     <div class="top">
       <div class="greet"><span id="greet">Good morning!</span><small id="date"></small></div>
       <div class="controls">
+        <div class="pill" role="group" aria-label="Routine">
+          <button id="mode-morning" class="emoji" data-mode="morning" aria-pressed="true" aria-label="Morning">☀️</button>
+          <button id="mode-night" class="emoji" data-mode="night" aria-pressed="false" aria-label="Night">🌙</button>
+        </div>
         <div class="pill" role="group" aria-label="Language">
           <button id="lang-en" data-lang="en" aria-pressed="true">EN</button>
           <button id="lang-sv" data-lang="sv" aria-pressed="false">SV</button>
@@ -293,7 +392,24 @@
     </div>
     <div class="sun"></div>
     <div class="cloud c1"></div><div class="cloud c2"></div>
+    <div class="starfield night-only" id="starfield" aria-hidden="true"></div>
+    <div class="moon night-only" aria-hidden="true">
+      <svg viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="46" fill="#FFF1B8"/>
+        <circle cx="34" cy="38" r="7" fill="#F2DE9C"/><circle cx="62" cy="64" r="9" fill="#F2DE9C"/><circle cx="66" cy="34" r="4" fill="#F2DE9C"/>
+        <g class="awake">
+          <circle cx="38" cy="48" r="4" fill="#5B4A1E"/><circle cx="60" cy="48" r="4" fill="#5B4A1E"/>
+          <path d="M42 62 q8 6 16 0" stroke="#5B4A1E" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </g>
+        <g class="zz">
+          <path d="M32 50 q6 -5 12 0 M54 50 q6 -5 12 0" stroke="#5B4A1E" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M44 64 q6 4 12 0" stroke="#5B4A1E" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
     <div class="hill"></div><div class="hill h2"></div>
+    <div class="town night-only" id="town" aria-hidden="true"></div>
+    <div class="zzz night-only" aria-hidden="true"><span>z</span><span>z</span><span>z</span></div>
     <div class="animal-wrap" id="wrap"><div class="animal" id="animal" role="button" tabindex="0" aria-label="Today's friend"></div></div>
     <div class="friend-tag"><span id="friend-label">Today's friend:</span> <b id="friend-name">Bunny</b></div>
   </section>
@@ -364,47 +480,54 @@
       <path d="M16 40 h16" stroke-width="3.5"/>`),
     poop: I(`<ellipse cx="24" cy="38" rx="17" ry="7.5" fill="#9B6238"/>
       <ellipse cx="24" cy="29" rx="13" ry="7.5" fill="#A86C3E"/>
-      <circle cx="24" cy="19" r="8.5" fill="#B37844"/>
-      <path d="M24 11 q-1 -6 4 -7" fill="none" stroke-width="3.5"/>
-      <circle cx="20" cy="28" r="2.6" fill="#FFFFFF" stroke="none"/><circle cx="28" cy="28" r="2.6" fill="#FFFFFF" stroke="none"/>
-      <circle cx="20.6" cy="28.4" r="1.2" fill="#22335A" stroke="none"/><circle cx="28.6" cy="28.4" r="1.2" fill="#22335A" stroke="none"/>
-      <path d="M20 34 q4 3 8 0" fill="none" stroke-width="2.5"/>`),
+      <circle cx="24" cy="20" r="8.5" fill="#B37844"/>`),
   };
-  const STEPS = [
-    {id:'pee',       icon:ICON.toilet, anim:'spin',  en:'Pee',          sv:'Kissa'},
-    {id:'teeth',     icon:ICON.brush,  anim:'jump',  en:'Brush teeth',  sv:'Borsta tänderna'},
-    {id:'water1',    icon:ICON.water,  anim:'roll',  en:'Drink water',  sv:'Dricka vatten'},
-    {id:'breakfast', icon:ICON.food,   anim:'grow',  en:'Food',         sv:'Mat'},
-    {id:'water2',    icon:ICON.water,  anim:'rollback', sfx:'roll', en:'Drink water',  sv:'Dricka vatten'},
-    {id:'poop',      icon:ICON.poop,   anim:'exit',  en:'Poop',         sv:'Bajsa'},
-  ];
+  const ROUTINES = {
+    morning: { key:'done', steps:[
+      {id:'pee',       icon:ICON.toilet, anim:'spin',  en:'Pee',          sv:'Kissa'},
+      {id:'teeth',     icon:ICON.brush,  anim:'jump',  en:'Brush teeth',  sv:'Borsta tänderna'},
+      {id:'water1',    icon:ICON.water,  anim:'roll',  en:'Drink water',  sv:'Dricka vatten'},
+      {id:'breakfast', icon:ICON.food,   anim:'grow',  en:'Food',         sv:'Mat'},
+      {id:'water2',    icon:ICON.water,  anim:'rollback', sfx:'roll', en:'Drink water',  sv:'Dricka vatten'},
+      {id:'poop',      icon:ICON.poop,   anim:'exit',  en:'Poop',         sv:'Bajsa'},
+    ]},
+    night: { key:'nightDone', steps:[
+      {id:'n-eat',   icon:ICON.food,    en:'Eat',          sv:'Äta'},
+      {id:'n-water', icon:ICON.water,   en:'Drink water',  sv:'Dricka vatten'},
+      {id:'n-pee',   icon:ICON.toilet, en:'Pee',          sv:'Kissa'},
+      {id:'n-teeth', icon:ICON.brush,   en:'Brush teeth',  sv:'Borsta tänderna'},
+    ]},
+  };
   const ANIM_MS = {spin:5000, jump:5000, roll:5000, rollback:5000, grow:5000, dance:5000, flip:5000, exit:5000, hello:900};
+  const STUNT_MS = 5600;   // fly to roof, four jumps, fly home
+  const NIGHT_MS = 7400;   // stunt, lights off, smoke rings
+  const HERO_LEFT = 22;    // hero rest position, % of stage width (matches CSS)
 
   const T = {
     en:{
-      greet:'Good morning!', friend:"Today's friend:", slide:'Slide when done →', done:'Done!',
-      undo:'Undo last step', reset:'Reset today', pick:"Today's friend", close:'Done', grownups:'Grown-ups',
-      sheetP:'Undo a step, start the morning over, or pick a different friend for today.',
+      greet:'Good morning!', greetNight:'Good evening!', friend:"Today's friend:", hero:"Tonight's hero:", slide:'Slide when done →', done:'Done!',
+      undo:'Undo last step', reset:'Reset this routine', pick:"Today's friend", close:'Done', grownups:'Grown-ups',
+      sheetP:'Undo a step, start this routine over, or pick a different friend for today.',
       allDone:'All done!', allDoneSub:'What a great morning. Tap to close.', banner:'All done for today ⭐',
-      praise:['Great job!','Wow, amazing!','You did it!','Super!','Hooray!'],
-      next:'Next: ', todayIs:(a)=>`Today's friend is the ${a.toLowerCase()}!`,
-      finaleSay:'All done! What a great morning!', hold:'Keep holding…', soundOn:'Sound on', soundOff:'Sound off',
-      voice:'en-US',
+      allDoneNight:'Good night!', allDoneNightSub:'The whole town is asleep. Sleep tight.', bannerNight:'Everyone is asleep — good night 🌙',
+      hold:'Keep holding…', soundOn:'Sound on', soundOff:'Sound off', modeMorning:'Morning routine', modeNight:'Night routine',
     },
     sv:{
-      greet:'God morgon!', friend:'Dagens kompis:', slide:'Dra när du är klar →', done:'Klart!',
-      undo:'Ångra sista steget', reset:'Börja om idag', pick:'Dagens kompis', close:'Klar', grownups:'Vuxna',
-      sheetP:'Ångra ett steg, börja om morgonen, eller välj en annan kompis för idag.',
+      greet:'God morgon!', greetNight:'God kväll!', friend:'Dagens kompis:', hero:'Kvällens hjälte:', slide:'Dra när du är klar →', done:'Klart!',
+      undo:'Ångra sista steget', reset:'Börja om rutinen', pick:'Dagens kompis', close:'Klar', grownups:'Vuxna',
+      sheetP:'Ångra ett steg, börja om rutinen, eller välj en annan kompis för idag.',
       allDone:'Allt klart!', allDoneSub:'Vilken fin morgon. Tryck för att stänga.', banner:'Allt klart för idag ⭐',
-      praise:['Bra jobbat!','Wow, fantastiskt!','Du klarade det!','Toppen!','Hurra!'],
-      next:'Nästa: ', todayIs:(a)=>`Dagens kompis är ${a.toLowerCase()}!`,
-      finaleSay:'Allt klart! Vilken fin morgon!', hold:'Håll kvar…', soundOn:'Ljud på', soundOff:'Ljud av',
-      voice:'sv-SE',
+      allDoneNight:'God natt!', allDoneNightSub:'Hela staden sover. Sov gott.', bannerNight:'Alla sover — god natt 🌙',
+      hold:'Håll kvar…', soundOn:'Ljud på', soundOff:'Ljud av', modeMorning:'Morgonrutin', modeNight:'Kvällsrutin',
     }
   };
 
   /* ---------- Animals (simple original cartoon SVGs) ---------- */
+  // Hero mask: a red band with pointed corners behind the eyes (shown at night only)
+  const mask = (x, y, gap, r) => { const L = x-gap-r-8, Rr = x+gap+r+8, T = y-r-3, B = y+r+5;
+    return `<path class="mask" d="M${L} ${T} L${L-6} ${T-8} Q${x} ${T-13} ${Rr+6} ${T-8} L${Rr} ${T} Q${Rr} ${B} ${Rr-10} ${B} L${L+10} ${B} Q${L} ${B} ${L} ${T} Z" fill="#E0554B" stroke="#B83F36" stroke-width="2" stroke-linejoin="round"/>`; };
   const face = (x, y, gap, r, mouthY) => `
+    ${mask(x, y, gap, r)}
     <circle class="eye" cx="${x-gap}" cy="${y}" r="${r}" fill="#22335A"/>
     <circle class="eye" cx="${x+gap}" cy="${y}" r="${r}" fill="#22335A"/>
     <circle cx="${x-gap+r*0.35}" cy="${y-r*0.35}" r="${r*0.3}" fill="#fff"/>
@@ -460,6 +583,7 @@
       <ellipse cx="100" cy="158" rx="40" ry="26" fill="#C9F0A8"/>
       <circle cx="66" cy="84" r="24" fill="#6FC46A" stroke="#4C9E47" stroke-width="3"/>
       <circle cx="134" cy="84" r="24" fill="#6FC46A" stroke="#4C9E47" stroke-width="3"/>
+      <path class="mask" d="M38 72 L30 60 Q100 50 170 60 L162 72 Q162 104 134 104 L66 104 Q38 104 38 72 Z" fill="#E0554B" stroke="#B83F36" stroke-width="2" stroke-linejoin="round"/>
       <circle cx="66" cy="84" r="14" fill="#fff"/><circle cx="134" cy="84" r="14" fill="#fff"/> <circle class="eye" cx="68" cy="86" r="8" fill="#22335A"/><circle class="eye" cx="132" cy="86" r="8" fill="#22335A"/> <circle cx="80" cy="122" r="4" fill="#4C9E47"/><circle cx="120" cy="122" r="4" fill="#4C9E47"/> <path d="M70 134 Q100 162 130 134" stroke="#22335A" stroke-width="3" fill="none" stroke-linecap="round"/> <ellipse class="mouth-open" cx="100" cy="144" rx="14" ry="8" fill="#B23B4A"/>
       <path d="M48 178 q-20 14 -4 18 q14 2 22 -10 M152 178 q20 14 4 18 q-14 2 -22 -10" fill="#6FC46A" stroke="#4C9E47" stroke-width="3"/>`},
     { id:'elephant', en:'Elephant', sv:'Elefanten', svg:`
@@ -523,6 +647,7 @@
       <path d="M46 110 q-14 40 8 66 q6 -34 4 -66 Z M154 110 q14 40 -8 66 q-6 -34 -4 -66 Z" fill="#C39A6C" stroke="#BE9468" stroke-width="3"/>
       <ellipse cx="100" cy="150" rx="34" ry="30" fill="#F6E8D2"/>
       <path d="M78 140 q6 6 12 0 M94 140 q6 6 12 0 M110 140 q6 6 12 0 M86 156 q6 6 12 0 M102 156 q6 6 12 0" stroke="#D8B285" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path class="mask" d="M42 82 L34 68 Q100 58 166 68 L158 82 Q158 126 126 126 L74 126 Q42 126 42 82 Z" fill="#E0554B" stroke="#B83F36" stroke-width="2" stroke-linejoin="round"/>
       <circle cx="74" cy="96" r="26" fill="#FFFBF3" stroke="#BE9468" stroke-width="3"/> <circle cx="126" cy="96" r="26" fill="#FFFBF3" stroke="#BE9468" stroke-width="3"/> <circle class="eye" cx="74" cy="98" r="12" fill="#22335A"/><circle class="eye" cx="126" cy="98" r="12" fill="#22335A"/> <circle cx="78" cy="93" r="4" fill="#fff"/><circle cx="130" cy="93" r="4" fill="#fff"/> <path d="M92 112 L100 128 L108 112 Z" fill="#F28C28" stroke="#BE9468" stroke-width="3" stroke-linejoin="round"/>
       <path d="M80 190 l-8 8 M80 190 v10 M80 190 l8 8 M120 190 l-8 8 M120 190 v10 M120 190 l8 8" stroke="#F28C28" stroke-width="5" stroke-linecap="round"/>`},
     { id:'monkey', en:'Monkey', sv:'Apan', svg:`
@@ -540,7 +665,8 @@
       <ellipse cx="76" cy="192" rx="16" ry="8" fill="#B98A66" stroke="#9C6E4C" stroke-width="3"/>
       <ellipse cx="124" cy="192" rx="16" ry="8" fill="#B98A66" stroke="#9C6E4C" stroke-width="3"/>`},
   ];
-  const svgWrap = inner => `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${inner}</svg>`;
+  const CAPE = `<path class="cape" d="M62 116 Q26 150 14 198 L104 184 Q94 150 108 118 Z" fill="#E0554B" stroke="#B83F36" stroke-width="3" stroke-linejoin="round"/>`;
+  const svgWrap = inner => `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${CAPE}${inner}</svg>`;
 
   /* ---------- State ---------- */
   const todayKey = () => { const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); };
@@ -548,8 +674,10 @@
   const save = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} };
 
   let settings = Object.assign({lang:'en', sound:true}, load('mf_settings', {}));
+  const freshDay = () => ({date: todayKey(), done: [], nightDone: [], animal: null});
   let day = load('mf_day', null);
-  if (!day || day.date !== todayKey()) day = {date: todayKey(), done: [], animal: null};
+  if (!day || day.date !== todayKey()) day = freshDay();
+  if (!Array.isArray(day.nightDone)) day.nightDone = [];
 
   const dayIndex = () => Math.floor((Date.now() - new Date().getTimezoneOffset()*60000) / 86400000);
   const animalIdx = () => day.animal != null ? day.animal : dayIndex() % ANIMALS.length;
@@ -557,6 +685,14 @@
   const animalName = a => a[settings.lang];
   const stepName = s => s[settings.lang];
   let busy = false;
+
+  // Which routine is showing. Evenings open on Night, otherwise Morning; the switch overrides.
+  const hourNow = new Date().getHours();
+  let mode = (hourNow >= 17 || hourNow < 4) ? 'night' : 'morning';
+  const R = () => ROUTINES[mode];
+  const steps = () => R().steps;
+  const doneList = () => day[R().key];
+  const isNight = () => mode === 'night';
 
   /* ---------- Audio ---------- */
   let ctx = null, master = null;
@@ -643,25 +779,95 @@
     hello(){ tone(N.E5,.12,{vol:.14}); tone(N.G5,.2,{when:.12,vol:.14}); },
     click(){ tone(1200,.05,{vol:.06}); },
     fanfare(){ [N.C5,N.C5,N.C5,N.E5,N.G5,N.C6].forEach((f,i)=>tone(f, i<3?.14:.4, {type:'triangle',vol:.2,when:[0,.15,.3,.45,.75,1.1][i]})); [N.E5,N.G5,N.C6].forEach((f,i)=>tone(f,1.2,{vol:.08,when:1.1+i*.02})); },
+    // Night: a soft light-switch click for each window, a breathy puff for each smoke ring, a sleepy chime at the end
+    lightOff(when){ tone(720,.06,{type:'sine',vol:.09,when,to:420}); tone(260,.12,{type:'triangle',vol:.05,when:when+0.03}); },
+    puff(when){
+      const c = ac(); if (!c) return;
+      const dur = 0.55, len = Math.floor(c.sampleRate*dur), buf = c.createBuffer(1,len,c.sampleRate), d = buf.getChannelData(0);
+      for (let i=0;i<len;i++) d[i] = Math.random()*2-1;
+      const src = c.createBufferSource(); src.buffer = buf;
+      const f = c.createBiquadFilter(); f.type='lowpass'; f.frequency.value = 900; f.Q.value = 0.7;
+      const g = c.createGain(); const t0 = c.currentTime + when;
+      g.gain.setValueAtTime(0.0001,t0); g.gain.exponentialRampToValueAtTime(0.22,t0+0.06); g.gain.exponentialRampToValueAtTime(0.0001,t0+dur);
+      src.connect(f).connect(g).connect(master); src.start(t0); src.stop(t0+dur);
+    },
+    // Hero roof stomp: whoosh over, four spring-loaded landings, whoosh home
+    hero_stomp(){
+      whoosh(1.2, 0); tone(400,1.0,{type:'triangle',vol:.12,when:.1,to:900});
+      [1.96, 2.74, 3.53, 4.37].forEach(t0 => { tone(110,.3,{type:'sine',vol:.3,when:t0,to:50}); tone(480,.32,{type:'square',vol:.14,when:t0+0.03,to:130}); SFX.puff(t0-0.02); });
+      whoosh(1.1, 4.4); tone(900,1.0,{type:'triangle',vol:.12,when:4.45,to:400});
+    },
+    hero_land(){ whoosh(1.6,0); tone(700,1.6,{type:'triangle',vol:.12,to:180}); tone(N.C5,.4,{when:1.9,vol:.12}); },
+    goodnight(){
+      [N.G5,N.E5,N.C5,N.G4].forEach((f,i)=>tone(f,1.4,{vol:.09,when:i*.55}));
+      tone(N.C4,4.2,{vol:.05,when:.2}); tone(N.G4,3.6,{vol:.035,when:.8});
+    },
   };
-
-  /* ---------- Speech ---------- */
-  let voices = [];
-  function loadVoices(){ try { voices = speechSynthesis.getVoices() || []; } catch(e){} }
-  if ('speechSynthesis' in window){ loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
-  function speak(text, delay=0){
-    if (!settings.sound || !('speechSynthesis' in window)) return;
-    const go = () => { try {
-      const u = new SpeechSynthesisUtterance(text);
-      const lang = t().voice; u.lang = lang; u.rate = 0.92; u.pitch = 1.15;
-      const pref = voices.filter(v => v.lang && v.lang.replace('_','-').toLowerCase().startsWith(lang.slice(0,2)));
-      const fav = pref.find(v => /alva|samantha|karen|daniel|google/i.test(v.name)) || pref[0];
-      if (fav) u.voice = fav;
-      speechSynthesis.cancel(); speechSynthesis.speak(u);
-    } catch(e){} };
-    delay ? setTimeout(go, delay) : go();
-  }
   const pick = arr => arr[Math.floor(Math.random()*arr.length)];
+
+  /* ---------- Night town ---------- */
+  const HOUSES = [
+    {wall:'#F3D9C4', roof:'#C4735A', door:'#8A5A42'},
+    {wall:'#CFE3F5', roof:'#5B6E9E', door:'#3E4F7A'},
+    {wall:'#F5D0DC', roof:'#9C6FA8', door:'#6E4D7A'},
+    {wall:'#DCEBC8', roof:'#4F8A6E', door:'#3A6B52'},
+  ];
+  function buildTown(){
+    const n = ROUTINES.night.steps.length, W = 400, gap = W / n;
+    let out = `<svg viewBox="0 0 400 150" xmlns="http://www.w3.org/2000/svg"><rect x="-20" y="128" width="440" height="30" fill="#16392D"/>`;
+    ROUTINES.night.steps.forEach((s,i)=>{
+      const h = HOUSES[i % HOUSES.length], x = gap*i + (gap-64)/2, y = 68;
+      const dk = c => { const n = parseInt(c.slice(1),16), f = 0.3, base = {r:16,g:26,b:51};
+        const r = Math.round(((n>>16)&255)*f + base.r*(1-f)), g = Math.round(((n>>8)&255)*f + base.g*(1-f)), bb = Math.round((n&255)*f + base.b*(1-f));
+        return '#'+[r,g,bb].map(v=>v.toString(16).padStart(2,'0')).join(''); };
+      out += `<g class="house" data-i="${i}" style="--wall:${h.wall};--roof:${h.roof};--door:${h.door};--wall-d:${dk(h.wall)};--roof-d:${dk(h.roof)};--door-d:${dk(h.door)}">
+        <ellipse class="glow" cx="${x+32}" cy="${y+26}" rx="47" ry="38"/>
+        <rect class="roof" x="${x+44}" y="${y-22}" width="11" height="26" rx="2"/>
+        <rect class="wall" x="${x}" y="${y}" width="64" height="60" rx="4"/>
+        <path class="roof" d="M${x-6} ${y+2} L${x+32} ${y-30} L${x+70} ${y+2} Z"/>
+        <rect class="win" x="${x+9}" y="${y+12}" width="17" height="17" rx="3"/>
+        <rect class="win" x="${x+38}" y="${y+12}" width="17" height="17" rx="3"/>
+        <path class="bars" d="M${x+9} ${y+20.5} h17 M${x+17.5} ${y+12} v17 M${x+38} ${y+20.5} h17 M${x+46.5} ${y+12} v17" stroke-width="2"/>
+        <rect class="door" x="${x+25}" y="${y+36}" width="14" height="24" rx="6"/>
+        <circle class="ring" cx="${x+49.5}" cy="${y-26}" r="6"/>
+        <circle class="ring" cx="${x+49.5}" cy="${y-26}" r="6"/>
+        <circle class="ring" cx="${x+49.5}" cy="${y-26}" r="6"/>
+      </g>`;
+    });
+    $('#town').innerHTML = out + '</svg>';
+    const sf = $('#starfield'); sf.innerHTML = '';
+    for (let i=0;i<46;i++){ const st = document.createElement('i'); st.style.left = (Math.random()*100)+'%'; st.style.top = (Math.random()*62)+'%'; st.style.animationDelay = (-Math.random()*3)+'s'; const sz = 2+Math.random()*2; st.style.width = st.style.height = sz+'px'; sf.appendChild(st); }
+  }
+  // Reflect saved progress: houses of completed steps are dark, no animation; hero on the moon if all done
+  function renderTown(){
+    document.querySelectorAll('#town .house').forEach((hs,i)=>{
+      const off = day.nightDone.includes(ROUTINES.night.steps[i].id);
+      hs.classList.toggle('off', off);
+      hs.querySelectorAll('.win,.glow').forEach(el=>el.classList.toggle('off', off));
+      hs.querySelectorAll('.ring').forEach(r=>r.classList.remove('puff'));
+    });
+    const asleep = day.nightDone.length >= ROUTINES.night.steps.length;
+    document.body.classList.toggle('asleep', asleep);
+    if (!busy) wrap.className = 'animal-wrap' + (asleep && isNight() ? ' on-moon' : '');
+  }
+  // One night step: the hero flies to that house, jumps on its roof four times, the house goes dark, the chimney puffs
+  function heroStep(i, cb){
+    const hs = document.querySelector(`#town .house[data-i="${i}"]`);
+    const wins = hs ? hs.querySelectorAll('.win') : [], glow = hs && hs.querySelector('.glow'), rings = hs ? hs.querySelectorAll('.ring') : [];
+    const n = ROUTINES.night.steps.length;
+    wrap.style.setProperty('--dx', (((i + 0.5) * 100 / n) - HERO_LEFT) + 'cqw');
+    wrap.className = 'animal-wrap'; void wrap.offsetWidth; wrap.classList.add('anim-hero-stomp'); animalEl.classList.add('happy');
+    SFX.hero_stomp();
+    // each landing shakes the house
+    [1960, 2740, 3530, 4370].forEach(t => setTimeout(()=>{ if (hs){ hs.classList.remove('stomp'); void hs.getBBox(); hs.classList.add('stomp'); } }, t));
+    const off = el => el && el.classList.add('off');
+    SFX.lightOff(4.45); SFX.lightOff(4.95);
+    setTimeout(()=>off(wins[0]), 4450);
+    setTimeout(()=>{ wins.forEach(off); off(glow); off(hs); }, 4950);
+    [5.7, 6.2, 6.7].forEach((t,k)=>{ SFX.puff(t); setTimeout(()=>{ if (rings[k]){ rings[k].classList.remove('puff'); void rings[k].getBBox(); rings[k].classList.add('puff'); } }, t*1000); });
+    setTimeout(()=>{ wrap.className = 'animal-wrap'; animalEl.classList.remove('happy'); }, STUNT_MS);
+    setTimeout(()=>{ cb && cb(); }, NIGHT_MS);
+  }
 
   /* ---------- Render ---------- */
   const wrap = $('#wrap'), animalEl = $('#animal');
@@ -672,27 +878,30 @@
     document.querySelectorAll('#animal-picker button').forEach((b,i)=>b.setAttribute('aria-pressed', String(i===animalIdx())));
   }
   function renderText(){
-    const s = t();
+    const s = t(), night = isNight();
     document.documentElement.lang = settings.lang;
-    $('#greet').textContent = s.greet;
-    $('#friend-label').textContent = s.friend;
-    $('#date').textContent = new Date().toLocaleDateString(settings.lang==='sv'?'sv-SE':'en-GB',{weekday:'long', day:'numeric', month:'long'});
+    $('#greet').textContent = night ? s.greetNight : s.greet;
+    $('#friend-label').textContent = night ? s.hero : s.friend;
+    $('#date').textContent = new Date().toLocaleDateString(settings.lang==='sv'?'sv-SE':'en-GB',{weekday:'long', day:'numeric', month:'short'});
     $('#undo').lastElementChild.textContent = s.undo;
     $('#reset').lastElementChild.textContent = s.reset;
     $('#pick-label').textContent = s.pick;
     $('#close-sheet').textContent = s.close;
     $('#sheet-title').textContent = s.grownups;
     $('#sheet-p').textContent = s.sheetP;
-    $('#finale-title').textContent = s.allDone;
-    $('#finale-sub').textContent = s.allDoneSub;
-    $('#banner').textContent = s.banner;
+    $('#finale-title').textContent = night ? s.allDoneNight : s.allDone;
+    $('#finale-sub').textContent = night ? s.allDoneNightSub : s.allDoneSub;
+    $('#finale .stars').innerHTML = night ? '<span>✨</span><span>🌙</span><span>✨</span>' : '<span>⭐</span>'.repeat(6);
+    $('#banner').textContent = night ? s.bannerNight : s.banner;
     $('#holdhint').textContent = s.hold;
     $('#sound').setAttribute('aria-label', settings.sound ? s.soundOn : s.soundOff);
     $('#lang-en').setAttribute('aria-pressed', String(settings.lang==='en'));
     $('#lang-sv').setAttribute('aria-pressed', String(settings.lang==='sv'));
+    $('#mode-morning').setAttribute('aria-pressed', String(!night)); $('#mode-morning').setAttribute('aria-label', s.modeMorning);
+    $('#mode-night').setAttribute('aria-pressed', String(night)); $('#mode-night').setAttribute('aria-label', s.modeNight);
     document.querySelectorAll('.step').forEach((el,i)=>{
-      el.querySelector('.step-name button').textContent = stepName(STEPS[i]);
-      const done = day.done.includes(STEPS[i].id);
+      el.querySelector('.step-name button').textContent = stepName(steps()[i]);
+      const done = doneList().includes(steps()[i].id);
       el.querySelector('.hint').textContent = done ? s.done : s.slide;
       el.querySelector('.step-do').textContent = done ? '✓' : '';
     });
@@ -700,7 +909,7 @@
   function buildSteps(){
     const host = $('#steps'); host.innerHTML = '';
     host.style.display='grid'; host.style.gap='12px';
-    STEPS.forEach((s,i)=>{
+    steps().forEach((s,i)=>{
       const el = document.createElement('article'); el.className='step'; el.dataset.i = i;
       el.innerHTML = `
         <div class="step-head">
@@ -712,22 +921,28 @@
       host.appendChild(el);
       attachSlider(el, i);
     });
-    $('#stars').innerHTML = STEPS.map(()=>'<span>⭐</span>').join('');
+    $('#stars').innerHTML = steps().map(()=> isNight() ? '<span>🌙</span>' : '<span>⭐</span>').join('');
   }
   function renderProgress(){
-    const doneCount = day.done.length;
+    const doneCount = doneList().length;
     document.querySelectorAll('#stars span').forEach((st,i)=>st.classList.toggle('on', i<doneCount));
     let nextSet = false;
     document.querySelectorAll('.step').forEach((el,i)=>{
-      const done = day.done.includes(STEPS[i].id);
+      const done = doneList().includes(steps()[i].id);
       el.classList.toggle('done', done);
       const knob = el.querySelector('.knob'), fill = el.querySelector('.fill');
       if (done){ const max = el.querySelector('.track').clientWidth - knob.offsetWidth - 10; knob.style.transform = `translateX(${Math.max(max,0)}px)`; fill.style.width='100%'; knob.textContent='✓'; knob.setAttribute('aria-valuenow','100'); }
-      else { knob.style.transform='translateX(0)'; fill.style.width='0'; knob.innerHTML = STEPS[i].icon; knob.setAttribute('aria-valuenow','0'); }
+      else { knob.style.transform='translateX(0)'; fill.style.width='0'; knob.innerHTML = steps()[i].icon; knob.setAttribute('aria-valuenow','0'); }
       const isNext = !done && !nextSet; el.classList.toggle('next', isNext); if (isNext) nextSet = true;
     });
-    $('#banner').hidden = doneCount < STEPS.length;
+    $('#banner').hidden = doneCount < steps().length;
     renderText();
+  }
+  function setMode(m){
+    if (busy || !ROUTINES[m]) return;
+    mode = m; document.body.classList.toggle('night', isNight());
+    buildSteps(); renderProgress(); renderTown();
+    $('#list').scrollTop = 0;
   }
 
   /* ---------- Slider ---------- */
@@ -764,21 +979,33 @@
     setTimeout(()=>{ wrap.className='animal-wrap'; animalEl.classList.remove('happy'); cb && cb(); }, ANIM_MS[name] || 1500);
   }
   function complete(i){
-    const s = STEPS[i]; if (day.done.includes(s.id)) return;
-    busy = true; day.done.push(s.id); save('mf_day', day); renderProgress();
-    playAnim(s.anim, () => {
+    const s = steps()[i]; if (doneList().includes(s.id)) return;
+    busy = true; doneList().push(s.id); save('mf_day', day); renderProgress();
+    const after = () => {
       busy = false;
-      const remaining = STEPS.filter(x => !day.done.includes(x.id));
-      if (!remaining.length) finale();
-    }, s.sfx);
+      const remaining = steps().filter(x => !doneList().includes(x.id));
+      if (!remaining.length) (isNight() ? nightFinale : finale)();
+    };
+    if (isNight()) heroStep(i, after);
+    else playAnim(s.anim, after, s.sfx);
   }
   function finale(){
-    const a = ANIMALS[animalIdx()];
     $('#finale').hidden = false; SFX.fanfare(); confetti();
     wrap.className = 'animal-wrap'; void wrap.offsetWidth; wrap.classList.add('anim-dance'); animalEl.classList.add('happy');
     setTimeout(()=>{ wrap.className='animal-wrap'; animalEl.classList.remove('happy'); }, 4000);
   }
+  // Good night: the hero flies up and lands on the moon; the sky dims, the moon closes its eyes, z's drift up
+  function nightFinale(){
+    busy = true;
+    wrap.className = 'animal-wrap'; void wrap.offsetWidth; wrap.classList.add('anim-hero-land'); SFX.hero_land();
+    setTimeout(()=>{
+      wrap.className = 'animal-wrap on-moon'; busy = false;
+      document.body.classList.add('asleep'); SFX.goodnight();
+      setTimeout(()=>{ $('#finale').hidden = false; }, 900);
+    }, 2600);
+  }
   $('#finale').addEventListener('click', ()=>{ $('#finale').hidden = true; });
+  document.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', ()=>{ if (mode !== b.dataset.mode){ SFX.click(); setMode(b.dataset.mode); } }));
 
   animalEl.addEventListener('click', ()=>{ if (busy) return; playAnim('hello'); });
   animalEl.addEventListener('keydown', e=>{ if (e.key==='Enter'||e.key===' '){ e.preventDefault(); animalEl.click(); } });
@@ -803,8 +1030,8 @@
   function closeSheet(){ $('#sheet').hidden = true; }
   $('#close-sheet').addEventListener('click', closeSheet);
   $('#sheet').addEventListener('click', e => { if (e.target === $('#sheet')) closeSheet(); });
-  $('#undo').addEventListener('click', ()=>{ day.done.pop(); save('mf_day', day); renderProgress(); SFX.click(); });
-  $('#reset').addEventListener('click', ()=>{ day.done = []; save('mf_day', day); renderProgress(); SFX.click(); closeSheet(); });
+  $('#undo').addEventListener('click', ()=>{ doneList().pop(); save('mf_day', day); renderProgress(); renderTown(); SFX.click(); });
+  $('#reset').addEventListener('click', ()=>{ day[R().key] = []; save('mf_day', day); renderProgress(); renderTown(); SFX.click(); closeSheet(); });
   const picker = $('#animal-picker');
   ANIMALS.forEach((a,i)=>{ const b = document.createElement('button'); b.type='button'; b.setAttribute('aria-label', a.en); b.innerHTML = svgWrap(a.svg); b.addEventListener('click', ()=>{ day.animal = i; save('mf_day', day); renderAnimal(); SFX.click(); }); picker.appendChild(b); });
 
@@ -823,11 +1050,13 @@
   }
 
   /* ---------- Midnight rollover while open ---------- */
-  setInterval(()=>{ if (day.date !== todayKey()){ day = {date: todayKey(), done: [], animal:null}; save('mf_day', day); renderAnimal(); renderProgress(); } }, 60000);
+  setInterval(()=>{ if (day.date !== todayKey()){ day = freshDay(); save('mf_day', day); renderAnimal(); renderProgress(); renderTown(); } }, 60000);
   window.addEventListener('resize', ()=>renderProgress());
 
   /* ---------- Boot ---------- */
-  buildSteps(); renderAnimal(); renderProgress();
+  buildTown(); renderAnimal();
+  document.body.classList.toggle('night', isNight());
+  buildSteps(); renderProgress(); renderTown();
   $('#sound').textContent = settings.sound ? '🔊' : '🔇';
 })();
 </script>
