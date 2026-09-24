@@ -370,6 +370,78 @@
   body:not(.night) #stage::after{transition:none}
   body.asleep .starfield i{animation-duration:6s}
   .greet{min-width:0}
+
+  /* ---------- Any-time (ad hoc) mode: dusk sky, task tiles, rocket + fireworks ---------- */
+  body.adhoc{
+    --sky:#3B2A6B; --sky2:#FFF4EA; --card:#FFFFFF; --ink:#3A2A4A; --muted:#8A7590;
+    --sun:#FF7A59; --sun-soft:#FFD3C2; --track:#F3E1D6; --knob:#FFFFFF; --border:#EAD3C4; --shadow:0 6px 18px rgba(90,50,60,.12);
+    --done:#47B87A; --done-ink:#0F3D26; --hill:#4F8A6E; --hill2:#3A6B52; --panel:#FFFFFF;
+  }
+  body.adhoc #stage{background:linear-gradient(180deg,#2E2160 0%,#6E3E8C 45%,#D9646E 78%,#F8A66A 100%)}
+  body.adhoc .sun,body.adhoc .cloud{display:none}
+  body.adhoc .starfield{display:block;-webkit-mask-image:linear-gradient(#000 0%,#000 40%,transparent 75%);mask-image:linear-gradient(#000 0%,#000 40%,transparent 75%)}
+  body.adhoc .greet,body.adhoc .greet small{color:#FFF4EA}
+  body.adhoc .greet small{color:#F5D6E0}
+  body.adhoc .stars,body.adhoc #banner{display:none}
+  .tiles{display:none;grid-template-columns:repeat(6,1fr);gap:8px;padding:2px 0 4px}
+  @media (max-width:420px){.tiles{grid-template-columns:repeat(3,1fr)}.tile svg{width:44px;height:44px}}
+  body.adhoc .tiles{display:grid}
+  .tile{
+    position:relative;aspect-ratio:1;border-radius:18px;background:var(--card);border:2px solid var(--border);box-shadow:var(--shadow);
+    display:grid;place-items:center;gap:2px;padding:6px 4px 4px;grid-template-rows:1fr auto;touch-action:manipulation;-webkit-touch-callout:none;
+    transition:transform .2s,border-color .3s,background .3s;
+  }
+  .tile svg{width:min(9vw,44px);height:min(9vw,44px);display:block}
+  .tile small{font-size:10px;font-weight:800;color:var(--muted);letter-spacing:.02em;line-height:1;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+  .tile .ring{position:absolute;inset:-2px;border-radius:18px;border:3px solid var(--sun);clip-path:inset(0 100% 0 0);pointer-events:none}
+  .tile.holding .ring{clip-path:inset(0 0 0 0);transition:clip-path .6s linear}
+  .tile.armed{border-color:var(--sun);background:var(--sun-soft)}
+  .tile.armed small{color:#7A2E1A}
+  .tile.done{border-color:var(--done);background:#E4F7EC}
+  .tile.done::after{content:"✓";position:absolute;top:-6px;right:-6px;width:22px;height:22px;border-radius:50%;background:var(--done);color:#fff;font-weight:900;font-size:13px;display:grid;place-items:center}
+  .tile.wiggle{animation:tileWiggle .4s ease-in-out 1}
+  @keyframes tileWiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg) scale(1.06)}75%{transform:rotate(8deg) scale(1.06)}}
+  .tile.nope{animation:tileNope .45s ease-in-out 1}
+  @keyframes tileNope{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+  .tiles-hint{text-align:center;font-size:12px;font-weight:800;color:var(--muted);padding:0 0 6px;display:none}
+  body.adhoc .tiles-hint{display:block}
+  #toast{position:fixed;left:50%;bottom:calc(80px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:30;background:var(--ink);color:var(--card);border-radius:999px;padding:8px 16px;font-weight:800;font-size:14px;box-shadow:var(--shadow);opacity:0;transition:opacity .3s;pointer-events:none}
+  #toast.show{opacity:1}
+  /* Parachute above the animal (any-time mode only) */
+  .chute{position:absolute;left:50%;transform:translateX(-50%);display:none;pointer-events:none}
+  .chute svg{width:100%;height:100%;display:block;overflow:visible}
+  .chute{bottom:68%;width:125%}
+  .wrap-chute .chute{display:block}
+  .anim-launch{animation:launch 10s linear 1}
+  @keyframes launch{
+    0%   {transform:translateX(-50%) translateY(0) scaleY(1)}
+    2.4% {transform:translateX(-50%) translateY(2%) scaleY(.88)}
+    6.4% {transform:translateX(-50%) translateY(-28%) scaleY(1.06)}
+    11.2%{transform:translateX(-50%) translateY(0) scaleY(1)}
+    13.6%{transform:translateX(-50%) translateY(3%) scaleY(.84)}
+    18.8%{transform:translateX(-50%) translateY(-75%) scaleY(1.08)}
+    24%  {transform:translateX(-50%) translateY(0) scaleY(1)}
+    26.8%{transform:translateX(-50%) translateY(4%) scaleY(.78)}
+    28.8%{transform:translateX(-50%) translateY(-30%) scaleY(1.12)}
+    38.4%{transform:translateX(-50%) translateY(-220cqh) scaleY(1.04)}
+    56%  {transform:translateX(-50%) translateY(-220cqh) rotate(0) scale(.5)}
+    58%  {transform:translateX(calc(-50% - 3cqw)) translateY(-40cqh) rotate(-3deg) scale(.5)}
+    61%  {transform:translateX(calc(-50% - 5cqw)) translateY(-27cqh) rotate(-5deg) scale(.55)}
+    68%  {transform:translateX(calc(-50% + 8cqw)) translateY(-22cqh) rotate(6deg) scale(.62)}
+    76%  {transform:translateX(calc(-50% - 8cqw)) translateY(-16cqh) rotate(-6deg) scale(.72)}
+    84%  {transform:translateX(calc(-50% + 7cqw)) translateY(-10cqh) rotate(6deg) scale(.84)}
+    91%  {transform:translateX(calc(-50% - 4cqw)) translateY(-4cqh) rotate(-4deg) scale(.94)}
+    95%  {transform:translateX(calc(-50% + 1cqw)) translateY(-1cqh) rotate(1deg) scale(1)}
+    96.5%{transform:translateX(-50%) translateY(2%) scaleY(.88) rotate(0)}
+    98.5%{transform:translateX(-50%) translateY(-3%) scaleY(1.04)}
+    100% {transform:translateX(-50%) translateY(0) scaleY(1)}
+  }
+  /* City skyline behind the hill in any-time mode */
+  .skyline{position:absolute;left:0;right:0;bottom:16%;height:44%;display:none;pointer-events:none}
+  body.adhoc .skyline{display:block}
+  .skyline svg{width:100%;height:100%;display:block;overflow:visible}
+  #flash{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:17;transition:opacity .08s}
+  #flash.on{opacity:.85}
 </style>
 </head>
 <body>
@@ -382,6 +454,7 @@
         <div class="pill" role="group" aria-label="Routine">
           <button id="mode-morning" class="emoji" data-mode="morning" aria-pressed="true" aria-label="Morning">☀️</button>
           <button id="mode-night" class="emoji" data-mode="night" aria-pressed="false" aria-label="Night">🌙</button>
+          <button id="mode-adhoc" class="emoji" data-mode="adhoc" aria-pressed="false" aria-label="Any time">⚡</button>
         </div>
         <div class="pill" role="group" aria-label="Language">
           <button id="lang-en" data-lang="en" aria-pressed="true">EN</button>
@@ -407,15 +480,25 @@
         </g>
       </svg>
     </div>
+    <div class="skyline" id="skyline" aria-hidden="true"></div>
     <div class="hill"></div><div class="hill h2"></div>
     <div class="town night-only" id="town" aria-hidden="true"></div>
     <div class="zzz night-only" aria-hidden="true"><span>z</span><span>z</span><span>z</span></div>
-    <div class="animal-wrap" id="wrap"><div class="animal" id="animal" role="button" tabindex="0" aria-label="Today's friend"></div></div>
+    <div class="animal-wrap" id="wrap">
+      <div class="chute" aria-hidden="true"><svg viewBox="0 0 120 90">
+        <path d="M6 44 Q60 -14 114 44 Z" fill="#FF7A59"/><path d="M24 40 Q60 -6 96 40 Z" fill="#FFD36B"/><path d="M42 40 Q60 2 78 40 Z" fill="#FF7A59"/>
+        <path d="M6 44 Q60 -14 114 44" stroke="#B83F36" stroke-width="3" fill="none"/>
+        <path d="M8 44 L52 88 M36 42 L56 88 M84 42 L64 88 M112 44 L68 88" stroke="#7A5238" stroke-width="2"/>
+      </svg></div>
+      <div class="animal" id="animal" role="button" tabindex="0" aria-label="Today's friend"></div>
+    </div>
     <div class="friend-tag"><span id="friend-label">Today's friend:</span> <b id="friend-name">Bunny</b></div>
   </section>
 
   <section id="list" aria-label="Morning steps">
     <div class="stars" id="stars" aria-hidden="true"></div>
+    <div class="tiles" id="tiles" role="group" aria-label="Tasks"></div>
+    <div class="tiles-hint" id="tiles-hint"></div>
     <div id="steps"></div>
     <div class="banner" id="banner" hidden></div>
   </section>
@@ -446,6 +529,8 @@
   </div>
 </div>
 <canvas id="confetti" hidden></canvas>
+<div id="flash" aria-hidden="true"></div>
+<div id="toast" role="status" aria-live="polite"></div>
 
 <script>
 (function(){
@@ -478,6 +563,11 @@
       <ellipse cx="24" cy="24" rx="18" ry="4.5" fill="#FFB020"/>
       <ellipse cx="24" cy="24" rx="13" ry="2.5" fill="#FFF0B0" stroke="none"/>
       <path d="M16 40 h16" stroke-width="3.5"/>`),
+    shower: I(`<path d="M8 20 V12 Q8 6 14 6 H24" fill="none" stroke-width="3.5"/>
+      <path d="M12 22 Q24 12 36 22 Z" fill="#B9D3EC"/>
+      <path d="M11 22 H37" stroke-width="3.5"/>
+      <path d="M15 28 v5 M20 28 v7 M25 28 v5 M30 28 v7 M35 28 v5" stroke="#4FA3F5" stroke-width="3"/>
+      <path d="M17 38 v4 M23 40 v4 M29 38 v4" stroke="#4FA3F5" stroke-width="3"/>`),
     poop: I(`<ellipse cx="24" cy="38" rx="17" ry="7.5" fill="#9B6238"/>
       <ellipse cx="24" cy="29" rx="13" ry="7.5" fill="#A86C3E"/>
       <circle cx="24" cy="20" r="8.5" fill="#B37844"/>`),
@@ -497,7 +587,19 @@
       {id:'n-pee',   icon:ICON.toilet, en:'Pee',          sv:'Kissa'},
       {id:'n-teeth', icon:ICON.brush,   en:'Brush teeth',  sv:'Borsta tänderna'},
     ]},
+    // Any time: the five unique tasks; only the ones a grown-up has armed show a slider
+    adhoc: { key:'adhocDone', steps:[
+      {id:'a-pee',   icon:ICON.toilet, en:'Pee',          sv:'Kissa'},
+      {id:'a-teeth', icon:ICON.brush,  en:'Brush teeth',  sv:'Borsta tänderna'},
+      {id:'a-water', icon:ICON.water,  en:'Drink water',  sv:'Dricka vatten'},
+      {id:'a-food',  icon:ICON.food,   en:'Food',         sv:'Mat'},
+      {id:'a-poop',  icon:ICON.poop,   en:'Poop',         sv:'Bajsa'},
+      {id:'a-shower',icon:ICON.shower, en:'Shower',       sv:'Duscha'},
+    ]},
   };
+  const ADHOC_MAX = 3;            // armed tasks at a time
+  const ADHOC_DONE_MS = 600000;   // a finished task clears itself after 10 minutes
+  const LAUNCH_MS = 10000;
   const ANIM_MS = {spin:5000, jump:5000, roll:5000, rollback:5000, grow:5000, dance:5000, flip:5000, exit:5000, hello:900};
   const STUNT_MS = 5600;   // fly to roof, four jumps, fly home
   const NIGHT_MS = 7400;   // stunt, lights off, smoke rings
@@ -511,6 +613,7 @@
       allDone:'All done!', allDoneSub:'What a great morning. Tap to close.', banner:'All done for today ⭐',
       allDoneNight:'Good night!', allDoneNightSub:'The whole town is asleep. Sleep tight.', bannerNight:'Everyone is asleep — good night 🌙',
       hold:'Keep holding…', soundOn:'Sound on', soundOff:'Sound off', modeMorning:'Morning routine', modeNight:'Night routine',
+      greetAdhoc:"Let's do it!", modeAdhoc:'Any time', tilesHint:'Grown-ups: hold a task to add it (3 at a time)', maxToast:'3 tasks at a time',
     },
     sv:{
       greet:'God morgon!', greetNight:'God kväll!', friend:'Dagens kompis:', hero:'Kvällens hjälte:', slide:'Dra när du är klar →', done:'Klart!',
@@ -519,6 +622,7 @@
       allDone:'Allt klart!', allDoneSub:'Vilken fin morgon. Tryck för att stänga.', banner:'Allt klart för idag ⭐',
       allDoneNight:'God natt!', allDoneNightSub:'Hela staden sover. Sov gott.', bannerNight:'Alla sover — god natt 🌙',
       hold:'Håll kvar…', soundOn:'Ljud på', soundOff:'Ljud av', modeMorning:'Morgonrutin', modeNight:'Kvällsrutin',
+      greetAdhoc:'Nu kör vi!', modeAdhoc:'När som helst', tilesHint:'Vuxna: håll en uppgift för att lägga till (3 åt gången)', maxToast:'3 uppgifter åt gången',
     }
   };
 
@@ -674,10 +778,13 @@
   const save = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} };
 
   let settings = Object.assign({lang:'en', sound:true}, load('mf_settings', {}));
-  const freshDay = () => ({date: todayKey(), done: [], nightDone: [], animal: null});
+  const freshDay = () => ({date: todayKey(), done: [], nightDone: [], adhocDone: [], adhocDoneAt: {}, adhocArmed: [], animal: null});
   let day = load('mf_day', null);
   if (!day || day.date !== todayKey()) day = freshDay();
   if (!Array.isArray(day.nightDone)) day.nightDone = [];
+  if (!Array.isArray(day.adhocDone)) day.adhocDone = [];
+  if (!day.adhocDoneAt) day.adhocDoneAt = {};
+  if (!Array.isArray(day.adhocArmed)) day.adhocArmed = [];
 
   const dayIndex = () => Math.floor((Date.now() - new Date().getTimezoneOffset()*60000) / 86400000);
   const animalIdx = () => day.animal != null ? day.animal : dayIndex() % ANIMALS.length;
@@ -690,9 +797,11 @@
   const hourNow = new Date().getHours();
   let mode = (hourNow >= 17 || hourNow < 4) ? 'night' : 'morning';
   const R = () => ROUTINES[mode];
-  const steps = () => R().steps;
-  const doneList = () => day[R().key];
   const isNight = () => mode === 'night';
+  const isAdhoc = () => mode === 'adhoc';
+  // In any-time mode only the armed tasks are shown, in the order they were armed
+  const steps = () => isAdhoc() ? day.adhocArmed.map(id => ROUTINES.adhoc.steps.find(s => s.id === id)).filter(Boolean) : R().steps;
+  const doneList = () => day[R().key];
 
   /* ---------- Audio ---------- */
   let ctx = null, master = null;
@@ -798,6 +907,39 @@
       whoosh(1.1, 4.4); tone(900,1.0,{type:'triangle',vol:.12,when:4.45,to:400});
     },
     hero_land(){ whoosh(1.6,0); tone(700,1.6,{type:'triangle',vol:.12,to:180}); tone(N.C5,.4,{when:1.9,vol:.12}); },
+    // Any time: rocket rumble, lift-off whistle, six firework booms with crackle, parachute down, landing
+    rumble(when, dur){
+      const c = ac(); if (!c) return;
+      const len = Math.floor(c.sampleRate*dur), buf = c.createBuffer(1,len,c.sampleRate), d = buf.getChannelData(0);
+      for (let i=0;i<len;i++) d[i] = Math.random()*2-1;
+      const src = c.createBufferSource(); src.buffer = buf;
+      const f = c.createBiquadFilter(); f.type='lowpass'; f.frequency.value = 220;
+      const g = c.createGain(); const t0 = c.currentTime + when;
+      g.gain.setValueAtTime(0.0001,t0); g.gain.exponentialRampToValueAtTime(0.6,t0+0.3); g.gain.setValueAtTime(0.6,t0+dur-0.2); g.gain.exponentialRampToValueAtTime(0.0001,t0+dur);
+      src.connect(f).connect(g).connect(master); src.start(t0); src.stop(t0+dur);
+      tone(48, dur, {type:'sine', vol:.25, when});
+    },
+    boom(when, big){
+      const c = ac(); if (!c) return;
+      tone(big?90:70, big?.9:.6, {type:'sine', vol: big?.45:.32, when, to:28});
+      const dur = big?1.1:.7, len = Math.floor(c.sampleRate*dur), buf = c.createBuffer(1,len,c.sampleRate), d = buf.getChannelData(0);
+      for (let i=0;i<len;i++) d[i] = (Math.random()*2-1) * Math.pow(1 - i/len, 2.2);
+      const src = c.createBufferSource(); src.buffer = buf;
+      const f = c.createBiquadFilter(); f.type='lowpass'; f.frequency.setValueAtTime(2400, c.currentTime+when); f.frequency.exponentialRampToValueAtTime(200, c.currentTime+when+dur);
+      const g = c.createGain(); g.gain.value = big?.7:.5;
+      src.connect(f).connect(g).connect(master); src.start(c.currentTime+when); src.stop(c.currentTime+when+dur);
+      for (let k=0;k<(big?14:8);k++) tone(1800+Math.random()*2200, .04, {type:'square', vol:.05, when: when+0.15+Math.random()*0.7});
+    },
+    launch(bursts){
+      const jump = (t0, f) => { tone(f*0.4,.25,{type:'sawtooth',vol:.14,when:t0,to:f*2.2}); tone(f*1.1,.35,{type:'square',vol:.15,when:t0+0.55,to:f*0.3}); tone(120,.25,{type:'sine',vol:.22,when:t0+0.56,to:70}); };
+      jump(0.2, 320); jump(1.32, 420);                                              // two growing jumps
+      tone(200,.3,{type:'sawtooth',vol:.16,when:2.66,to:1400}); tone(300,1.2,{type:'triangle',vol:.14,when:2.75,to:2400}); whoosh(1.2,2.7);   // the big one
+      bursts.forEach(b => { tone(600,.35,{type:'triangle',vol:.08,when:b.t-0.45,to:1600}); SFX.boom(b.t, b.big); });
+      tone(1300, 3.6, {type:'triangle', vol:.08, when:5.9, to:450});             // floating down, slowly
+      whoosh(1.6, 6.4); whoosh(1.6, 8.0);
+      tone(110, .3, {type:'sine', vol:.3, when:9.6, to:50}); tone(480,.3,{type:'square',vol:.14,when:9.62,to:130}); // landing
+      [N.C5,N.E5,N.G5].forEach((f,i)=>tone(f,.35,{when:9.75+i*.1,vol:.16}));
+    },
     goodnight(){
       [N.G5,N.E5,N.C5,N.G4].forEach((f,i)=>tone(f,1.4,{vol:.09,when:i*.55}));
       tone(N.C4,4.2,{vol:.05,when:.2}); tone(N.G4,3.6,{vol:.035,when:.8});
@@ -880,9 +1022,12 @@
   function renderText(){
     const s = t(), night = isNight();
     document.documentElement.lang = settings.lang;
-    $('#greet').textContent = night ? s.greetNight : s.greet;
+    $('#greet').textContent = isAdhoc() ? s.greetAdhoc : night ? s.greetNight : s.greet;
+    $('#mode-adhoc').setAttribute('aria-pressed', String(isAdhoc())); $('#mode-adhoc').setAttribute('aria-label', s.modeAdhoc);
+    $('#tiles-hint').textContent = s.tilesHint;
+    document.querySelectorAll('.tile').forEach((el,i)=>{ el.querySelector('small').textContent = stepName(ROUTINES.adhoc.steps[i]); });
     $('#friend-label').textContent = night ? s.hero : s.friend;
-    $('#date').textContent = new Date().toLocaleDateString(settings.lang==='sv'?'sv-SE':'en-GB',{weekday:'long', day:'numeric', month:'short'});
+    $('#date').textContent = new Date().toLocaleDateString(settings.lang==='sv'?'sv-SE':'en-GB',{weekday:'short', day:'numeric', month:'short'});
     $('#undo').lastElementChild.textContent = s.undo;
     $('#reset').lastElementChild.textContent = s.reset;
     $('#pick-label').textContent = s.pick;
@@ -897,7 +1042,7 @@
     $('#sound').setAttribute('aria-label', settings.sound ? s.soundOn : s.soundOff);
     $('#lang-en').setAttribute('aria-pressed', String(settings.lang==='en'));
     $('#lang-sv').setAttribute('aria-pressed', String(settings.lang==='sv'));
-    $('#mode-morning').setAttribute('aria-pressed', String(!night)); $('#mode-morning').setAttribute('aria-label', s.modeMorning);
+    $('#mode-morning').setAttribute('aria-pressed', String(mode==='morning')); $('#mode-morning').setAttribute('aria-label', s.modeMorning);
     $('#mode-night').setAttribute('aria-pressed', String(night)); $('#mode-night').setAttribute('aria-label', s.modeNight);
     document.querySelectorAll('.step').forEach((el,i)=>{
       el.querySelector('.step-name button').textContent = stepName(steps()[i]);
@@ -935,15 +1080,80 @@
       else { knob.style.transform='translateX(0)'; fill.style.width='0'; knob.innerHTML = steps()[i].icon; knob.setAttribute('aria-valuenow','0'); }
       const isNext = !done && !nextSet; el.classList.toggle('next', isNext); if (isNext) nextSet = true;
     });
-    $('#banner').hidden = doneCount < steps().length;
+    $('#banner').hidden = isAdhoc() || doneCount < steps().length;
+    renderTiles();
     renderText();
   }
   function setMode(m){
     if (busy || !ROUTINES[m]) return;
-    mode = m; document.body.classList.toggle('night', isNight());
+    mode = m; document.body.classList.toggle('night', isNight()); document.body.classList.toggle('adhoc', isAdhoc());
     buildSteps(); renderProgress(); renderTown();
     $('#list').scrollTop = 0;
   }
+
+  /* ---------- City skyline (any-time mode) ---------- */
+  function buildSkyline(){
+    const B = [ // x, width, top (viewBox 0..400 x 0..120, ground at 120)
+      [0,26,62],[28,20,38,'antenna'],[50,34,72],[88,18,26],[108,26,56],[138,22,50,'spire'],[164,40,76],[208,22,44],[234,30,66],[268,36,70,'dome'],[308,16,34,'antenna'],[328,30,60],[362,38,48]
+    ];
+    let out = '<svg viewBox="0 0 400 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">';
+    let win = '';
+    B.forEach(([x,w,top,kind])=>{
+      out += `<rect x="${x}" y="${top}" width="${w}" height="${120-top}" fill="#2A1E4F"/>`;
+      if (kind==='antenna') out += `<rect x="${x+w/2-1}" y="${top-16}" width="2" height="16" fill="#2A1E4F"/><circle cx="${x+w/2}" cy="${top-17}" r="2" fill="#FF5E7A"/>`;
+      if (kind==='spire') out += `<path d="M${x} ${top} L${x+w/2} ${top-30} L${x+w} ${top} Z" fill="#2A1E4F"/>`;
+      if (kind==='dome') out += `<circle cx="${x+w/2}" cy="${top}" r="${w/2}" fill="#2A1E4F"/>`;
+      for (let wy = top+6; wy < 116; wy += 8) for (let wx = x+4; wx < x+w-4; wx += 7) if (Math.random() < .55) win += `<rect x="${wx}" y="${wy}" width="3" height="4" fill="#FFD36B" opacity="${(.5+Math.random()*.5).toFixed(2)}"/>`;
+    });
+    $('#skyline').innerHTML = out + win + '</svg>';
+  }
+
+  /* ---------- Any-time tiles (long-press to arm / disarm) ---------- */
+  function buildTiles(){
+    const host = $('#tiles'); host.innerHTML = '';
+    ROUTINES.adhoc.steps.forEach((s,i)=>{
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'tile'; b.dataset.id = s.id;
+      b.innerHTML = `<span class="ring"></span>${s.icon}<small></small>`;
+      let timer = null, fired = false;
+      const start = e => { if (busy) return; e.preventDefault(); fired = false; b.classList.add('holding'); timer = setTimeout(()=>{ fired = true; b.classList.remove('holding'); toggleArm(s.id, b); }, 600); };
+      const cancel = () => { clearTimeout(timer); b.classList.remove('holding'); };
+      b.addEventListener('pointerdown', start);
+      ['pointerup','pointercancel','pointerleave'].forEach(ev => b.addEventListener(ev, cancel));
+      b.addEventListener('click', ()=>{ if (fired){ fired = false; return; } b.classList.remove('wiggle'); void b.offsetWidth; b.classList.add('wiggle'); SFX.click(); });
+      b.addEventListener('contextmenu', e => e.preventDefault());
+      host.appendChild(b);
+    });
+  }
+  function toggleArm(id, tile){
+    const armed = day.adhocArmed.includes(id);
+    if (armed){
+      day.adhocArmed = day.adhocArmed.filter(x => x !== id);
+      day.adhocDone = day.adhocDone.filter(x => x !== id); delete day.adhocDoneAt[id];
+    } else {
+      if (day.adhocArmed.length >= ADHOC_MAX){ tile.classList.remove('nope'); void tile.offsetWidth; tile.classList.add('nope'); toast(t().maxToast); SFX.lightOff(0); return; }
+      day.adhocArmed.push(id);
+    }
+    save('mf_day', day); SFX.click(); buildSteps(); renderProgress();
+  }
+  function renderTiles(){
+    document.querySelectorAll('.tile').forEach(el => {
+      el.classList.toggle('armed', day.adhocArmed.includes(el.dataset.id));
+      el.classList.toggle('done', day.adhocDone.includes(el.dataset.id));
+    });
+  }
+  // A finished any-time task clears itself (and disarms) after ADHOC_DONE_MS
+  function expireAdhoc(){
+    const now = Date.now(); let changed = false;
+    day.adhocDone.slice().forEach(id => {
+      if (now - (day.adhocDoneAt[id] || 0) >= ADHOC_DONE_MS){
+        day.adhocDone = day.adhocDone.filter(x => x !== id); delete day.adhocDoneAt[id];
+        day.adhocArmed = day.adhocArmed.filter(x => x !== id); changed = true;
+      }
+    });
+    if (changed){ save('mf_day', day); if (isAdhoc() && !busy){ buildSteps(); renderProgress(); } }
+  }
+  let toastTimer = null;
+  function toast(msg){ const el = $('#toast'); el.textContent = msg; el.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(()=>el.classList.remove('show'), 1600); }
 
   /* ---------- Slider ---------- */
   function attachSlider(el, i){
@@ -986,8 +1196,19 @@
       const remaining = steps().filter(x => !doneList().includes(x.id));
       if (!remaining.length) (isNight() ? nightFinale : finale)();
     };
-    if (isNight()) heroStep(i, after);
+    if (isAdhoc()){ day.adhocDoneAt[s.id] = Date.now(); save('mf_day', day); renderTiles(); launchStep(()=>{ busy = false; }); }
+    else if (isNight()) heroStep(i, after);
     else playAnim(s.anim, after, s.sfx);
+  }
+  // Any time: rocket launch, fireworks, parachute home
+  function launchStep(cb){
+    const bursts = [{t:4.0,big:false},{t:4.65,big:true},{t:5.3,big:false},{t:5.95,big:true}];
+    wrap.className = 'animal-wrap'; void wrap.offsetWidth; wrap.classList.add('anim-launch'); animalEl.classList.add('happy');
+    SFX.launch(bursts);
+    setTimeout(()=>fireworks(bursts.map(b=>({t:b.t-3.5, big:b.big}))), 3500);
+    setTimeout(()=>wrap.classList.add('wrap-chute'), 5500);
+    setTimeout(()=>wrap.classList.remove('wrap-chute'), 9560);
+    setTimeout(()=>{ wrap.className = 'animal-wrap'; animalEl.classList.remove('happy'); cb && cb(); }, LAUNCH_MS);
   }
   function finale(){
     $('#finale').hidden = false; SFX.fanfare(); confetti();
@@ -1030,8 +1251,12 @@
   function closeSheet(){ $('#sheet').hidden = true; }
   $('#close-sheet').addEventListener('click', closeSheet);
   $('#sheet').addEventListener('click', e => { if (e.target === $('#sheet')) closeSheet(); });
-  $('#undo').addEventListener('click', ()=>{ doneList().pop(); save('mf_day', day); renderProgress(); renderTown(); SFX.click(); });
-  $('#reset').addEventListener('click', ()=>{ day[R().key] = []; save('mf_day', day); renderProgress(); renderTown(); SFX.click(); closeSheet(); });
+  $('#undo').addEventListener('click', ()=>{ const id = doneList().pop(); if (isAdhoc() && id) delete day.adhocDoneAt[id]; save('mf_day', day); renderProgress(); renderTown(); SFX.click(); });
+  $('#reset').addEventListener('click', ()=>{
+    day[R().key] = [];
+    if (isAdhoc()){ day.adhocDoneAt = {}; day.adhocArmed = []; }
+    save('mf_day', day); buildSteps(); renderProgress(); renderTown(); SFX.click(); closeSheet();
+  });
   const picker = $('#animal-picker');
   ANIMALS.forEach((a,i)=>{ const b = document.createElement('button'); b.type='button'; b.setAttribute('aria-label', a.en); b.innerHTML = svgWrap(a.svg); b.addEventListener('click', ()=>{ day.animal = i; save('mf_day', day); renderAnimal(); SFX.click(); }); picker.appendChild(b); });
 
@@ -1049,12 +1274,52 @@
     })(t0);
   }
 
+  /* ---------- Fireworks ---------- */
+  function fireworks(bursts){
+    const cv = $('#confetti'), cx = cv.getContext('2d'); cv.hidden = false;
+    const dpr = Math.min(window.devicePixelRatio||1, 2); cv.width = innerWidth*dpr; cv.height = innerHeight*dpr; cx.setTransform(dpr,0,0,dpr,0,0);
+    const palette = ['#FF5E7A','#FFD36B','#5AC8FA','#7CFF9B','#FF9B3D','#C77DFF','#FFFFFF'];
+    const stageH = $('#stage').getBoundingClientRect().height;
+    const rockets = [], parts = [];
+    bursts.forEach(b => rockets.push({ launchAt:b.t-0.55, x: innerWidth*(0.15+Math.random()*0.7), y: innerHeight*0.62, ty: stageH*(0.12+Math.random()*0.35), big:b.big, c:pick(palette), c2:pick(palette), fired:false, exploded:false }));
+    const flash = $('#flash');
+    const t0 = performance.now(); let last = t0;
+    (function frame(now){
+      const el = (now - t0)/1000, dt = Math.min((now-last)/1000, .05); last = now;
+      cx.clearRect(0,0,innerWidth,innerHeight);
+      rockets.forEach(r => {
+        if (!r.fired && el >= r.launchAt){ r.fired = true; r.vy = -(r.y - r.ty) / 0.55; }
+        if (r.fired && !r.exploded){
+          r.y += r.vy*dt; r.vy *= 0.985;
+          for (let k=0;k<3;k++) parts.push({x:r.x+(Math.random()-.5)*4, y:r.y+Math.random()*10, vx:(Math.random()-.5)*20, vy:20+Math.random()*30, life:.35, age:0, r:1.6, c:'#FFE9A8'});
+          if (r.y <= r.ty){
+            r.exploded = true;
+            const n = r.big ? 150 : 90, sp = r.big ? 260 : 190;
+            for (let k=0;k<n;k++){ const a = Math.random()*Math.PI*2, v = sp*(0.35+Math.random()*0.65); parts.push({x:r.x, y:r.y, vx:Math.cos(a)*v, vy:Math.sin(a)*v, life:1.3+Math.random()*0.8, age:0, r:r.big?3.2:2.6, c: Math.random()<.7 ? r.c : r.c2, spark:true}); }
+            if (r.big){ flash.classList.add('on'); setTimeout(()=>flash.classList.remove('on'), 90); }
+          }
+        }
+      });
+      for (let i=parts.length-1;i>=0;i--){
+        const p = parts[i]; p.age += dt; if (p.age >= p.life){ parts.splice(i,1); continue; }
+        p.x += p.vx*dt; p.y += p.vy*dt; if (p.spark){ p.vy += 140*dt; p.vx *= 0.985; p.vy *= 0.985; }
+        const k = 1 - p.age/p.life; cx.globalAlpha = p.spark ? (k < .3 ? k/.3 * (Math.random()<.85?1:.2) : 1) : k;
+        cx.fillStyle = p.c; cx.beginPath(); cx.arc(p.x, p.y, p.r*(p.spark? (0.6+0.4*k) : 1), 0, 6.283); cx.fill();
+      }
+      cx.globalAlpha = 1;
+      const done = el > 1 && rockets.every(r=>r.exploded) && parts.length === 0;
+      if (!done && el < 7) requestAnimationFrame(frame); else { cv.hidden = true; cx.setTransform(1,0,0,1,0,0); }
+    })(t0);
+  }
+
   /* ---------- Midnight rollover while open ---------- */
   setInterval(()=>{ if (day.date !== todayKey()){ day = freshDay(); save('mf_day', day); renderAnimal(); renderProgress(); renderTown(); } }, 60000);
   window.addEventListener('resize', ()=>renderProgress());
 
+  setInterval(expireAdhoc, 5000);
+
   /* ---------- Boot ---------- */
-  buildTown(); renderAnimal();
+  buildTown(); buildTiles(); buildSkyline(); renderAnimal(); expireAdhoc();
   document.body.classList.toggle('night', isNight());
   buildSteps(); renderProgress(); renderTown();
   $('#sound').textContent = settings.sound ? '🔊' : '🔇';
