@@ -5,10 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Little Routines">
+<meta name="application-name" content="Little Routines">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#E6F2FC">
+<meta name="color-scheme" content="light">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif;background:#FBFDFF}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>Morning Friends</title>
+<title>Little Routines</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;800&display=swap">
 <style>
   :root{
@@ -18,22 +21,8 @@
     --done:#47B87A; --done-ink:#0F3D26; --hill:#7FCB8F; --hill2:#59B46F;
     --panel:#FFFFFF; --danger:#E0554B;
   }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      color-scheme:dark;
-      --sky:#0F1B33; --sky2:#1A2A4C; --card:#1B2A4A; --ink:#EEF3FF; --muted:#A5B3D1;
-      --sun:#FFC24D; --sun-soft:#5A4A2A; --grass:#4FC98A; --grass-dark:#2F8F5C;
-      --track:#2A3B60; --knob:#F3F6FF; --border:#33477A; --shadow:0 6px 18px rgba(0,0,0,.35);
-      --done:#3FBF7F; --done-ink:#EAFFF3; --hill:#3C7F57; --hill2:#2E6947; --panel:#1B2A4A;
-    }
-  }
-  :root[data-theme="dark"]{
-    color-scheme:dark;
-    --sky:#0F1B33; --sky2:#1A2A4C; --card:#1B2A4A; --ink:#EEF3FF; --muted:#A5B3D1;
-    --sun:#FFC24D; --sun-soft:#5A4A2A; --grass:#4FC98A; --grass-dark:#2F8F5C;
-    --track:#2A3B60; --knob:#F3F6FF; --border:#33477A; --shadow:0 6px 18px rgba(0,0,0,.35);
-    --done:#3FBF7F; --done-ink:#EAFFF3; --hill:#3C7F57; --hill2:#2E6947; --panel:#1B2A4A;
-  }
+  /* Morning is always light, night always dark, any-time always dusk — the device's dark-mode setting is ignored */
+  :root{color-scheme:light}
   html,body{height:100%;}
   body{
     margin:0; background:var(--sky2); color:var(--ink);
@@ -61,15 +50,15 @@
     position:absolute;inset:0 0 auto 0;display:flex;align-items:center;justify-content:space-between;
     padding:calc(12px + env(safe-area-inset-top,0px)) 16px 0;gap:12px;z-index:3;
   }
-  .greet{font-family:"Fredoka",sans-serif;font-weight:700;font-size:clamp(17px,4.5vw,28px);line-height:1.1;}
-  .pill button.emoji{padding:0 8px;font-size:15px}
+  .greet{min-width:0;font-family:"Fredoka",sans-serif;font-weight:700;font-size:clamp(16px,4.3vw,28px);line-height:1.1;}
+  .pill button.emoji{padding:0 6px;font-size:15px}
   .greet small{display:block;font-family:"Nunito",sans-serif;font-weight:700;font-size:13px;color:var(--muted);margin-top:2px;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .controls{display:flex;gap:8px;align-items:center}
+  .controls{display:flex;gap:6px;align-items:center;flex:none}
   .pill{
     display:inline-flex;align-items:center;background:var(--card);border:2px solid var(--border);border-radius:999px;
     padding:3px;box-shadow:var(--shadow);height:38px;
   }
-  .pill button{padding:0 10px;height:28px;border-radius:999px;font-weight:800;font-size:13px;color:var(--muted);letter-spacing:.03em}
+  .pill button{padding:0 8px;height:28px;border-radius:999px;font-weight:800;font-size:13px;color:var(--muted);letter-spacing:.03em}
   .pill button[aria-pressed="true"]{background:var(--sun);color:#2B1B00}
   .icon-btn{width:38px;height:38px;border-radius:999px;background:var(--card);border:2px solid var(--border);box-shadow:var(--shadow);font-size:18px;display:grid;place-items:center}
 
@@ -165,11 +154,18 @@
     93%  {transform:translateX(-50%) translateY(3%) scaleY(.92)}
     100% {transform:translateX(-50%) translateY(0) scaleY(1)}
   }
+  .anim-flip{animation:flip 2.5s cubic-bezier(.3,.6,.4,1) 2}
+  @keyframes flip{
+    0%{transform:translateX(-50%) translateY(0) rotate(0)}
+    15%{transform:translateX(-50%) translateY(6%) scaleY(.85) rotate(0)}
+    55%{transform:translateX(-50%) translateY(-70%) rotate(-200deg)}
+    100%{transform:translateX(-50%) translateY(0) rotate(-360deg)}
+  }
   .anim-hello{animation:hello .9s ease-in-out 1}
   @keyframes hello{0%,100%{transform:translateX(-50%) rotate(0)}25%{transform:translateX(-50%) rotate(-8deg) scale(1.06)}75%{transform:translateX(-50%) rotate(8deg) scale(1.06)}}
   @media (prefers-reduced-motion:reduce){
     .animal,.sun,.cloud{animation:none}
-    .anim-spin,.anim-jump,.anim-roll,.anim-rollback,.anim-grow,.anim-dance,.anim-flip,.anim-exit,
+    .anim-spin,.anim-jump,.anim-roll,.anim-rollback,.anim-grow,.anim-dance,.anim-flip,.anim-exit,.anim-launch,
     .anim-hero-stomp{animation:hello .9s ease-in-out 1}
     .cape{animation:none}
   }
@@ -221,8 +217,12 @@
     border:2.5px solid #22335A;will-change:transform;cursor:grab;touch-action:none;
   }
   .knob svg{width:38px;height:38px;display:block}
+  .ico-emoji{display:block;line-height:1;font-size:32px}
+  .tile .ico-emoji{font-size:min(8vw,38px)}
+  .ed-item .ico-emoji{font-size:24px;flex:none}
+  .ed-add .ico-emoji{font-size:24px}
   .knob:active{cursor:grabbing}
-  .step.done .knob{background:#fff;color:#0F3D26;font-weight:800;border-color:var(--grass-dark)}
+  .step.done .knob{background:var(--done);border-color:var(--grass-dark)}
   .step.done .track{pointer-events:none}
 
   .banner{
@@ -261,11 +261,27 @@
   .animals button[aria-pressed="true"]{border-color:var(--sun);background:var(--sun-soft)}
   .animals svg{width:100%;height:100%;display:block}
   .sheet-label{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  /* Routine editor */
+  .editor{display:grid;gap:14px}
+  .ed-routine{background:var(--track);border-radius:16px;padding:10px 10px 12px;display:grid;gap:8px}
+  .ed-head{display:flex;align-items:center;justify-content:space-between;font-family:"Fredoka",sans-serif;font-weight:600;font-size:16px}
+  .ed-head span{font-family:"Nunito",sans-serif;font-weight:800;font-size:12px;color:var(--muted)}
+  .ed-list{display:grid;gap:6px}
+  .ed-item{display:flex;align-items:center;gap:8px;background:var(--card);border-radius:12px;padding:6px 6px 6px 8px}
+  .ed-item svg{width:28px;height:28px;flex:none}
+  .ed-item .nm{flex:1;font-weight:800;font-size:14px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ed-item button{width:32px;height:32px;border-radius:9px;background:var(--track);font-weight:900;font-size:14px;display:grid;place-items:center;flex:none}
+  .ed-item button:disabled{opacity:.3}
+  .ed-item button.rm{background:#FBE3E0;color:#B23B36}
+  .ed-add{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+  .ed-add small{font-size:12px;font-weight:800;color:var(--muted);flex-basis:100%}
+  .ed-add button{width:44px;height:44px;border-radius:12px;background:var(--card);border:2px solid var(--border);display:grid;place-items:center}
+  .ed-add button svg{width:28px;height:28px}
+  .ed-add button:disabled{opacity:.35}
 
   /* ---------- Finale ---------- */
   #finale{position:fixed;inset:0;z-index:15;display:grid;place-items:center;background:rgba(230,242,252,.55);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
-  :root[data-theme="dark"] #finale{background:rgba(15,27,51,.6)}
-  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #finale{background:rgba(15,27,51,.6)}}
+  body.night #finale{background:rgba(15,27,51,.6)}
   .finale-card{
     background:var(--card);border:3px solid var(--sun);border-radius:30px;padding:26px 28px;text-align:center;
     box-shadow:var(--shadow);display:grid;gap:8px;max-width:420px;width:calc(100% - 40px);animation:pop .5s cubic-bezier(.2,1.4,.4,1) 1
@@ -296,7 +312,7 @@
   #animal-picker .cape,#animal-picker .mask{display:none}
   .cape{transform-box:fill-box;transform-origin:100% 0;animation:flutter .9s ease-in-out infinite}
   @keyframes flutter{0%,100%{transform:skewY(0) scaleX(1)}50%{transform:skewY(7deg) scaleX(1.14)}}
-  body.asleep .eye{transform:scaleY(.18)}
+  body.night.asleep .eye{transform:scaleY(.18)}
   .animal-wrap.on-moon{transform:translate(calc(-50% + 56cqw), -6cqw) scale(.7)}
   /* Roof stomp (5.6s): fly to the step's house, land on the roof, jump four times, fly home.
      --dx is the horizontal offset to that house, set by script */
@@ -338,8 +354,8 @@
   .moon svg{width:100%;height:100%;display:block;overflow:visible}
   .moon .zz{opacity:0;transition:opacity .8s}
   .moon .awake{transition:opacity .8s}
-  body.asleep .moon .awake{opacity:0}
-  body.asleep .moon .zz{opacity:1}
+  body.night.asleep .moon .awake{opacity:0}
+  body.night.asleep .moon .zz{opacity:1}
   .town{position:absolute;left:0;right:0;bottom:4%;height:54%;z-index:2}
   .town svg{width:100%;height:100%;display:block;overflow:visible}
   /* A lit house is bright all over; when it sleeps the whole house — walls, roof, door, windows — goes dark */
@@ -359,7 +375,7 @@
   .ring.puff{animation:puff 2.8s ease-out forwards}
   @keyframes puff{0%{opacity:0;transform:translateY(0) scale(.35)}12%{opacity:.85}100%{opacity:0;transform:translateY(-62px) scale(1.9)}}
   .zzz{position:absolute;left:50%;top:22%;transform:translateX(-50%);font-family:"Fredoka",sans-serif;font-weight:700;color:#EEF3FF;pointer-events:none;opacity:0;transition:opacity 1s}
-  body.asleep .zzz{opacity:1}
+  body.night.asleep .zzz{opacity:1}
   .zzz span{position:absolute;left:0;animation:zfloat 3.6s ease-out infinite}
   .zzz span:nth-child(1){font-size:18px;left:-40px;animation-delay:0s}
   .zzz span:nth-child(2){font-size:24px;left:-6px;animation-delay:1.2s}
@@ -368,8 +384,7 @@
   #stage::after{content:"";position:absolute;inset:0;background:#050A19;opacity:0;pointer-events:none;transition:opacity 2s;z-index:1}
   body.night.asleep #stage::after{opacity:.38}
   body:not(.night) #stage::after{transition:none}
-  body.asleep .starfield i{animation-duration:6s}
-  .greet{min-width:0}
+  body.night.asleep .starfield i{animation-duration:6s}
 
   /* ---------- Any-time (ad hoc) mode: dusk sky, task tiles, rocket + fireworks ---------- */
   body.adhoc{
@@ -380,11 +395,11 @@
   body.adhoc #stage{background:linear-gradient(180deg,#2E2160 0%,#6E3E8C 45%,#D9646E 78%,#F8A66A 100%)}
   body.adhoc .sun,body.adhoc .cloud{display:none}
   body.adhoc .starfield{display:block;-webkit-mask-image:linear-gradient(#000 0%,#000 40%,transparent 75%);mask-image:linear-gradient(#000 0%,#000 40%,transparent 75%)}
-  body.adhoc .greet,body.adhoc .greet small{color:#FFF4EA}
+  body.adhoc .greet{color:#FFF4EA}
   body.adhoc .greet small{color:#F5D6E0}
   body.adhoc .stars,body.adhoc #banner{display:none}
-  .tiles{display:none;grid-template-columns:repeat(6,1fr);gap:8px;padding:2px 0 4px}
-  @media (max-width:420px){.tiles{grid-template-columns:repeat(3,1fr)}.tile svg{width:44px;height:44px}}
+  .tiles{display:none;grid-template-columns:repeat(7,1fr);gap:8px;padding:2px 0 4px}
+  @media (max-width:560px){.tiles{grid-template-columns:repeat(4,1fr)}.tile svg{width:40px;height:40px}}
   body.adhoc .tiles{display:grid}
   .tile{
     position:relative;aspect-ratio:1;border-radius:18px;background:var(--card);border:2px solid var(--border);box-shadow:var(--shadow);
@@ -408,9 +423,8 @@
   #toast{position:fixed;left:50%;bottom:calc(80px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:30;background:var(--ink);color:var(--card);border-radius:999px;padding:8px 16px;font-weight:800;font-size:14px;box-shadow:var(--shadow);opacity:0;transition:opacity .3s;pointer-events:none}
   #toast.show{opacity:1}
   /* Parachute above the animal (any-time mode only) */
-  .chute{position:absolute;left:50%;transform:translateX(-50%);display:none;pointer-events:none}
+  .chute{position:absolute;left:50%;bottom:68%;width:125%;transform:translateX(-50%);display:none;pointer-events:none}
   .chute svg{width:100%;height:100%;display:block;overflow:visible}
-  .chute{bottom:68%;width:125%}
   .wrap-chute .chute{display:block}
   .anim-launch{animation:launch 10s linear 1}
   @keyframes launch{
@@ -436,6 +450,15 @@
     98.5%{transform:translateX(-50%) translateY(-3%) scaleY(1.04)}
     100% {transform:translateX(-50%) translateY(0) scaleY(1)}
   }
+  /* Mountains behind the hill in the morning */
+  .mountains{position:absolute;left:0;right:0;bottom:14%;height:46%;pointer-events:none}
+  body.night .mountains,body.adhoc .mountains{display:none}
+  .mountains svg{width:100%;height:100%;display:block}
+  .birds{position:absolute;left:-60px;top:20%;width:60px;height:24px;animation:drift 70s linear infinite;animation-delay:-30s;pointer-events:none}
+  body.night .birds,body.adhoc .birds{display:none}
+  .birds svg{width:100%;height:100%;overflow:visible}
+  .birds path{animation:flap .5s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center}
+  @keyframes flap{from{transform:scaleY(1)}to{transform:scaleY(.35)}}
   /* City skyline behind the hill in any-time mode */
   .skyline{position:absolute;left:0;right:0;bottom:16%;height:44%;display:none;pointer-events:none}
   body.adhoc .skyline{display:block}
@@ -480,6 +503,17 @@
         </g>
       </svg>
     </div>
+    <div class="mountains" aria-hidden="true"><svg viewBox="0 0 400 140" preserveAspectRatio="none">
+      <path d="M0 140 L0 96 L38 58 L70 84 L104 40 L140 78 L172 52 L206 90 L240 46 L276 82 L306 60 L340 92 L372 66 L400 88 L400 140 Z" fill="#C7D9EE"/>
+      <path d="M96 50 L104 40 L112 50 L106 49 L104 53 L100 49 Z M232 56 L240 46 L248 56 L243 55 L240 59 L236 55 Z M300 67 L306 60 L312 67 L308 66 L306 70 L303 66 Z" fill="#FFFFFF"/>
+      <path d="M0 140 L0 112 L30 90 L58 108 L92 76 L126 106 L156 88 L194 116 L226 86 L262 112 L292 96 L326 118 L358 100 L400 122 L400 140 Z" fill="#A9C4E2"/>
+      <path d="M86 82 L92 76 L98 82 L94 81 L92 85 L89 81 Z M220 92 L226 86 L232 92 L228 91 L226 95 L223 91 Z" fill="#FFFFFF"/>
+    </svg></div>
+    <div class="birds" aria-hidden="true"><svg viewBox="0 0 60 24">
+      <path d="M2 10 q5 -6 10 0 q5 -6 10 0" fill="none" stroke="#5B6E9E" stroke-width="2" stroke-linecap="round"/>
+      <path d="M30 4 q4 -5 8 0 q4 -5 8 0" fill="none" stroke="#5B6E9E" stroke-width="2" stroke-linecap="round" style="animation-delay:.2s"/>
+      <path d="M22 18 q3 -4 6 0 q3 -4 6 0" fill="none" stroke="#5B6E9E" stroke-width="1.6" stroke-linecap="round" style="animation-delay:.35s"/>
+    </svg></div>
     <div class="skyline" id="skyline" aria-hidden="true"></div>
     <div class="hill"></div><div class="hill h2"></div>
     <div class="town night-only" id="town" aria-hidden="true"></div>
@@ -517,6 +551,8 @@
     </div>
     <div class="sheet-label" id="pick-label">Today's friend</div>
     <div class="animals" id="animal-picker"></div>
+    <div class="sheet-label" id="edit-label">Edit routines</div>
+    <div class="editor" id="editor"></div>
     <button class="btn primary" id="close-sheet">Done</button>
   </div>
 </div>
@@ -563,40 +599,57 @@
       <ellipse cx="24" cy="24" rx="18" ry="4.5" fill="#FFB020"/>
       <ellipse cx="24" cy="24" rx="13" ry="2.5" fill="#FFF0B0" stroke="none"/>
       <path d="M16 40 h16" stroke-width="3.5"/>`),
-    shower: I(`<path d="M8 20 V12 Q8 6 14 6 H24" fill="none" stroke-width="3.5"/>
-      <path d="M12 22 Q24 12 36 22 Z" fill="#B9D3EC"/>
-      <path d="M11 22 H37" stroke-width="3.5"/>
-      <path d="M15 28 v5 M20 28 v7 M25 28 v5 M30 28 v7 M35 28 v5" stroke="#4FA3F5" stroke-width="3"/>
-      <path d="M17 38 v4 M23 40 v4 M29 38 v4" stroke="#4FA3F5" stroke-width="3"/>`),
-    poop: I(`<ellipse cx="24" cy="38" rx="17" ry="7.5" fill="#9B6238"/>
-      <ellipse cx="24" cy="29" rx="13" ry="7.5" fill="#A86C3E"/>
-      <circle cx="24" cy="20" r="8.5" fill="#B37844"/>`),
+    shower: I(`<path d="M8 22 V12 Q8 6 14 6 H24" fill="none" stroke-width="3.5"/>
+      <path d="M10 22 Q24 8 38 22 Z" fill="#FFFFFF"/>
+      <path d="M9 22 H39" stroke-width="3.5"/>
+      <path d="M14 28 v6 M20 28 v9 M26 28 v6 M32 28 v9 M38 28 v6" stroke="#12408F" stroke-width="3.8"/>
+      <path d="M17 39 v4 M23 42 v4 M29 39 v4 M35 42 v4" stroke="#12408F" stroke-width="3.8"/>`),
+    poop: I(`<g transform="translate(0,-3.3)"><path d="M5 38 C5 30 11 28 17 28.5 H33 C40 28 43 31 43 38 C43 44 38 45 33 45 H14 C8 45 5 44 5 38 Z" fill="#8E5A2B"/>
+      <path d="M12 29.5 C9 22 15 18.5 21 19 H31 C37 18.5 40 22.5 38 29.5 Z" fill="#8E5A2B"/>
+      <path d="M17 19.5 C15 12 19 9.5 24 9.5 C29 9.5 32.5 13 31 19.5 Z" fill="#8E5A2B"/>
+      <path d="M12 29.5 C18 27 27 27.5 38 29.5 M17 19.5 C21 17.5 27 18 31 19.5" fill="none" stroke="#5E3A17" stroke-width="2.2"/>
+      <path d="M9 39 C11 34.5 15 33 20 33.5 M15 25.5 C17 22.5 20 22 23 22.3 M20 15.5 C21.5 12.8 23.5 12.5 25 12.8" fill="none" stroke="#B9835A" stroke-width="2.2" stroke-linecap="round"/></g>`),
+    hands: I(`<path d="M13 40 V22 Q13 18 17 18 Q21 18 21 22 V14 Q21 10 25 10 Q29 10 29 14 V12 Q29 8 33 8 Q37 8 37 12 V16 Q37 12 41 12 Q45 12 45 16 V30 Q45 40 36 43 H21 Q13 43 13 40 Z" fill="#F5D0B5"/>
+      <path d="M21 22 V30 M29 14 V30 M37 16 V30" stroke="#C99A78" stroke-width="2"/>
+      <circle cx="10" cy="14" r="4" fill="#DDF0FF" stroke-width="2"/><circle cx="7" cy="25" r="2.5" fill="#DDF0FF" stroke-width="2"/><circle cx="15" cy="8" r="2.5" fill="#DDF0FF" stroke-width="2"/>
+      <path d="M40 38 q3 3 0 6 M44 34 q3 3 0 6" fill="none" stroke="#4FA3F5" stroke-width="2.5"/>`),
   };
+  // The task catalogue. Routines are lists of these keys (a task may appear more than once, e.g. water twice).
+  const TASKS = {
+    pee:    {icon:ICON.toilet, en:'Pee',         sv:'Kissa'},
+    teeth:  {icon:ICON.brush,  en:'Brush teeth', sv:'Borsta tänderna'},
+    water:  {icon:ICON.water,  en:'Drink water', sv:'Dricka vatten'},
+    food:   {icon:ICON.food,   en:'Food',        sv:'Mat'},
+    poop:   {icon:ICON.poop,   en:'Potty',       sv:'Bajsa'},
+    shower: {icon:ICON.shower, en:'Shower',      sv:'Duscha'},
+    hands:  {icon:ICON.hands,  en:'Wash hands',  sv:'Tvätta händerna'},
+  };
+  const TASK_ORDER = ['pee','teeth','water','food','poop','shower','hands'];
+  const DEFAULT_ROUTINES = { morning:['pee','teeth','water','food','water','poop'], night:['food','water','pee','teeth'] };
+  const ROUTINE_MAX = { morning:8, night:6 };
+  // Morning animations are handed out by position so a routine of any length stays varied
+  const MORNING_ANIMS = ['spin','jump','roll','grow','rollback','exit','dance','flip'];
   const ROUTINES = {
-    morning: { key:'done', steps:[
-      {id:'pee',       icon:ICON.toilet, anim:'spin',  en:'Pee',          sv:'Kissa'},
-      {id:'teeth',     icon:ICON.brush,  anim:'jump',  en:'Brush teeth',  sv:'Borsta tänderna'},
-      {id:'water1',    icon:ICON.water,  anim:'roll',  en:'Drink water',  sv:'Dricka vatten'},
-      {id:'breakfast', icon:ICON.food,   anim:'grow',  en:'Food',         sv:'Mat'},
-      {id:'water2',    icon:ICON.water,  anim:'rollback', sfx:'roll', en:'Drink water',  sv:'Dricka vatten'},
-      {id:'poop',      icon:ICON.poop,   anim:'exit',  en:'Poop',         sv:'Bajsa'},
-    ]},
-    night: { key:'nightDone', steps:[
-      {id:'n-eat',   icon:ICON.food,    en:'Eat',          sv:'Äta'},
-      {id:'n-water', icon:ICON.water,   en:'Drink water',  sv:'Dricka vatten'},
-      {id:'n-pee',   icon:ICON.toilet, en:'Pee',          sv:'Kissa'},
-      {id:'n-teeth', icon:ICON.brush,   en:'Brush teeth',  sv:'Borsta tänderna'},
-    ]},
-    // Any time: the five unique tasks; only the ones a grown-up has armed show a slider
-    adhoc: { key:'adhocDone', steps:[
-      {id:'a-pee',   icon:ICON.toilet, en:'Pee',          sv:'Kissa'},
-      {id:'a-teeth', icon:ICON.brush,  en:'Brush teeth',  sv:'Borsta tänderna'},
-      {id:'a-water', icon:ICON.water,  en:'Drink water',  sv:'Dricka vatten'},
-      {id:'a-food',  icon:ICON.food,   en:'Food',         sv:'Mat'},
-      {id:'a-poop',  icon:ICON.poop,   en:'Poop',         sv:'Bajsa'},
-      {id:'a-shower',icon:ICON.shower, en:'Shower',       sv:'Duscha'},
-    ]},
+    morning: { key:'done', steps:[] },
+    night:   { key:'nightDone', steps:[] },
+    // Any time: the whole catalogue; only the ones a grown-up has armed show a slider
+    adhoc:   { key:'adhocDone', steps: TASK_ORDER.map(k => Object.assign({id:'a-'+k, task:k}, TASKS[k])) },
   };
+  // Build the morning and night step lists from the saved routine config (settings.routines)
+  function buildRoutines(cfg){
+    ['morning','night'].forEach(r => {
+      const seen = {};
+      let list = (Array.isArray(cfg[r]) ? cfg[r] : []).filter(k => TASKS[k]).slice(0, ROUTINE_MAX[r]);
+      if (!list.length) list = DEFAULT_ROUTINES[r].slice();
+      cfg[r] = list;
+      ROUTINES[r].steps = list.map((k,i) => {
+        seen[k] = (seen[k] || 0) + 1;
+        const st = Object.assign({id:`${r}-${k}#${seen[k]}`, task:k}, TASKS[k]);
+        if (r === 'morning'){ st.anim = MORNING_ANIMS[i % MORNING_ANIMS.length]; if (st.anim === 'rollback') st.sfx = 'roll'; }
+        return st;
+      });
+    });
+  }
   const ADHOC_MAX = 3;            // armed tasks at a time
   const ADHOC_DONE_MS = 600000;   // a finished task clears itself after 10 minutes
   const LAUNCH_MS = 10000;
@@ -614,6 +667,7 @@
       allDoneNight:'Good night!', allDoneNightSub:'The whole town is asleep. Sleep tight.', bannerNight:'Everyone is asleep — good night 🌙',
       hold:'Keep holding…', soundOn:'Sound on', soundOff:'Sound off', modeMorning:'Morning routine', modeNight:'Night routine',
       greetAdhoc:"Let's do it!", modeAdhoc:'Any time', tilesHint:'Grown-ups: hold a task to add it (3 at a time)', maxToast:'3 tasks at a time',
+      editTitle:'Edit routines', editMorning:'Morning', editNight:'Night', addTask:'Add a task to the end:', maxTasks:'Max', minTask:'Keep at least one task', steps:'steps',
     },
     sv:{
       greet:'God morgon!', greetNight:'God kväll!', friend:'Dagens kompis:', hero:'Kvällens hjälte:', slide:'Dra när du är klar →', done:'Klart!',
@@ -623,6 +677,7 @@
       allDoneNight:'God natt!', allDoneNightSub:'Hela staden sover. Sov gott.', bannerNight:'Alla sover — god natt 🌙',
       hold:'Håll kvar…', soundOn:'Ljud på', soundOff:'Ljud av', modeMorning:'Morgonrutin', modeNight:'Kvällsrutin',
       greetAdhoc:'Nu kör vi!', modeAdhoc:'När som helst', tilesHint:'Vuxna: håll en uppgift för att lägga till (3 åt gången)', maxToast:'3 uppgifter åt gången',
+      editTitle:'Ändra rutiner', editMorning:'Morgon', editNight:'Kväll', addTask:'Lägg till en uppgift sist:', maxTasks:'Max', minTask:'Behåll minst en uppgift', steps:'steg',
     }
   };
 
@@ -778,6 +833,10 @@
   const save = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} };
 
   let settings = Object.assign({lang:'en', sound:true}, load('mf_settings', {}));
+  if (!T[settings.lang]) settings.lang = 'en';
+  settings.sound = settings.sound !== false;
+  if (!settings.routines || !Array.isArray(settings.routines.morning) || !Array.isArray(settings.routines.night)) settings.routines = { morning: DEFAULT_ROUTINES.morning.slice(), night: DEFAULT_ROUTINES.night.slice() };
+  buildRoutines(settings.routines);
   const freshDay = () => ({date: todayKey(), done: [], nightDone: [], adhocDone: [], adhocDoneAt: {}, adhocArmed: [], animal: null});
   let day = load('mf_day', null);
   if (!day || day.date !== todayKey()) day = freshDay();
@@ -785,8 +844,15 @@
   if (!Array.isArray(day.adhocDone)) day.adhocDone = [];
   if (!day.adhocDoneAt) day.adhocDoneAt = {};
   if (!Array.isArray(day.adhocArmed)) day.adhocArmed = [];
+  // Drop progress for steps that no longer exist (routine edited, or ids from an older version)
+  function pruneDone(){
+    day.done = day.done.filter(id => ROUTINES.morning.steps.some(s => s.id === id));
+    day.nightDone = day.nightDone.filter(id => ROUTINES.night.steps.some(s => s.id === id));
+  }
+  pruneDone();
 
   const dayIndex = () => Math.floor((Date.now() - new Date().getTimezoneOffset()*60000) / 86400000);
+  if (!(Number.isInteger(day.animal) && day.animal >= 0 && day.animal < ANIMALS.length)) day.animal = null;
   const animalIdx = () => day.animal != null ? day.animal : dayIndex() % ANIMALS.length;
   const t = () => T[settings.lang];
   const animalName = a => a[settings.lang];
@@ -820,6 +886,20 @@
       return ctx;
     } catch(e){ return null; }
   }
+  // iPhones mute Web Audio while the ring/silent switch is on. Playing a tiny silent clip through a
+  // normal <audio> element on the first touch moves the page into "playback" mode, after which the
+  // sound effects play regardless of the switch (the same trick games use).
+  let unlocked = false;
+  function unlockAudio(){
+    if (unlocked) return; unlocked = true;
+    try {
+      const a = document.createElement('audio'); a.setAttribute('playsinline',''); a.preload = 'auto'; a.volume = 0.01;
+      a.src = 'data:audio/wav;base64,UklGRrQBAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YZABAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA';
+      const pr = a.play(); if (pr && pr.catch) pr.catch(()=>{});
+    } catch(e){}
+    ac();
+  }
+  ['pointerup','touchend','click','keydown'].forEach(ev => document.addEventListener(ev, unlockAudio, {capture:true, passive:true}));
   function tone(freq, dur, opts={}){
     const c = ac(); if (!c) return;
     const {type='sine', vol=0.18, when=0, to=null} = opts;
@@ -962,7 +1042,8 @@
       const dk = c => { const n = parseInt(c.slice(1),16), f = 0.3, base = {r:16,g:26,b:51};
         const r = Math.round(((n>>16)&255)*f + base.r*(1-f)), g = Math.round(((n>>8)&255)*f + base.g*(1-f)), bb = Math.round((n&255)*f + base.b*(1-f));
         return '#'+[r,g,bb].map(v=>v.toString(16).padStart(2,'0')).join(''); };
-      out += `<g class="house" data-i="${i}" style="--wall:${h.wall};--roof:${h.roof};--door:${h.door};--wall-d:${dk(h.wall)};--roof-d:${dk(h.roof)};--door-d:${dk(h.door)}">
+      const sc = Math.min(1, (gap - 6) / 78), cx = x + 32;   // shrink houses when the routine has many steps
+      out += `<g transform="translate(${cx} 128) scale(${sc.toFixed(3)}) translate(${-cx} -128)"><g class="house" data-i="${i}" style="--wall:${h.wall};--roof:${h.roof};--door:${h.door};--wall-d:${dk(h.wall)};--roof-d:${dk(h.roof)};--door-d:${dk(h.door)}">
         <ellipse class="glow" cx="${x+32}" cy="${y+26}" rx="47" ry="38"/>
         <rect class="roof" x="${x+44}" y="${y-22}" width="11" height="26" rx="2"/>
         <rect class="wall" x="${x}" y="${y}" width="64" height="60" rx="4"/>
@@ -974,7 +1055,7 @@
         <circle class="ring" cx="${x+49.5}" cy="${y-26}" r="6"/>
         <circle class="ring" cx="${x+49.5}" cy="${y-26}" r="6"/>
         <circle class="ring" cx="${x+49.5}" cy="${y-26}" r="6"/>
-      </g>`;
+      </g></g>`;
     });
     $('#town').innerHTML = out + '</svg>';
     const sf = $('#starfield'); sf.innerHTML = '';
@@ -988,9 +1069,8 @@
       hs.querySelectorAll('.win,.glow').forEach(el=>el.classList.toggle('off', off));
       hs.querySelectorAll('.ring').forEach(r=>r.classList.remove('puff'));
     });
-    const asleep = day.nightDone.length >= ROUTINES.night.steps.length;
-    document.body.classList.toggle('asleep', asleep);
-    if (!busy) wrap.className = 'animal-wrap' + (asleep && isNight() ? ' on-moon' : '');
+    document.body.classList.toggle('asleep', isAsleep());
+    if (!busy) wrap.className = restWrap();
   }
   // One night step: the hero flies to that house, jumps on its roof four times, the house goes dark, the chimney puffs
   function heroStep(i, cb){
@@ -1013,6 +1093,9 @@
 
   /* ---------- Render ---------- */
   const wrap = $('#wrap'), animalEl = $('#animal');
+  const isAsleep = () => day.nightDone.length >= ROUTINES.night.steps.length;
+  // The wrap's resting classes: on the moon once the night routine is finished, otherwise just the wrap
+  const restWrap = () => 'animal-wrap' + (isNight() && isAsleep() ? ' on-moon' : '');
   function renderAnimal(){
     const a = ANIMALS[animalIdx()];
     animalEl.innerHTML = svgWrap(a.svg);
@@ -1025,7 +1108,9 @@
     $('#greet').textContent = isAdhoc() ? s.greetAdhoc : night ? s.greetNight : s.greet;
     $('#mode-adhoc').setAttribute('aria-pressed', String(isAdhoc())); $('#mode-adhoc').setAttribute('aria-label', s.modeAdhoc);
     $('#tiles-hint').textContent = s.tilesHint;
+    $('#list').setAttribute('aria-label', isAdhoc() ? s.modeAdhoc : night ? s.modeNight : s.modeMorning);
     document.querySelectorAll('.tile').forEach((el,i)=>{ el.querySelector('small').textContent = stepName(ROUTINES.adhoc.steps[i]); });
+    if (!$('#sheet').hidden) renderEditor();
     $('#friend-label').textContent = night ? s.hero : s.friend;
     $('#date').textContent = new Date().toLocaleDateString(settings.lang==='sv'?'sv-SE':'en-GB',{weekday:'short', day:'numeric', month:'short'});
     $('#undo').lastElementChild.textContent = s.undo;
@@ -1076,8 +1161,9 @@
       const done = doneList().includes(steps()[i].id);
       el.classList.toggle('done', done);
       const knob = el.querySelector('.knob'), fill = el.querySelector('.fill');
-      if (done){ const max = el.querySelector('.track').clientWidth - knob.offsetWidth - 10; knob.style.transform = `translateX(${Math.max(max,0)}px)`; fill.style.width='100%'; knob.textContent='✓'; knob.setAttribute('aria-valuenow','100'); }
-      else { knob.style.transform='translateX(0)'; fill.style.width='0'; knob.innerHTML = steps()[i].icon; knob.setAttribute('aria-valuenow','0'); }
+      knob.innerHTML = steps()[i].icon;   // the icon stays visible when done so a child can see which task it was
+      if (done){ const max = el.querySelector('.track').clientWidth - knob.offsetWidth - 10; knob.style.transform = `translateX(${Math.max(max,0)}px)`; fill.style.width='100%'; knob.setAttribute('aria-valuenow','100'); }
+      else { knob.style.transform='translateX(0)'; fill.style.width='0'; knob.setAttribute('aria-valuenow','0'); }
       const isNext = !done && !nextSet; el.classList.toggle('next', isNext); if (isNext) nextSet = true;
     });
     $('#banner').hidden = isAdhoc() || doneCount < steps().length;
@@ -1115,12 +1201,13 @@
       const b = document.createElement('button'); b.type = 'button'; b.className = 'tile'; b.dataset.id = s.id;
       b.innerHTML = `<span class="ring"></span>${s.icon}<small></small>`;
       let timer = null, fired = false;
-      const start = e => { if (busy) return; e.preventDefault(); fired = false; b.classList.add('holding'); timer = setTimeout(()=>{ fired = true; b.classList.remove('holding'); toggleArm(s.id, b); }, 600); };
+      const start = e => { if (busy) return; e.preventDefault(); ac(); fired = false; b.classList.add('holding'); timer = setTimeout(()=>{ fired = true; b.classList.remove('holding'); toggleArm(s.id, b); }, 600); };
       const cancel = () => { clearTimeout(timer); b.classList.remove('holding'); };
       b.addEventListener('pointerdown', start);
       ['pointerup','pointercancel','pointerleave'].forEach(ev => b.addEventListener(ev, cancel));
       b.addEventListener('click', ()=>{ if (fired){ fired = false; return; } b.classList.remove('wiggle'); void b.offsetWidth; b.classList.add('wiggle'); SFX.click(); });
       b.addEventListener('contextmenu', e => e.preventDefault());
+      b.addEventListener('keydown', e => { if ((e.key==='Enter'||e.key===' ') && !busy){ e.preventDefault(); toggleArm(s.id, b); } });
       host.appendChild(b);
     });
   }
@@ -1143,6 +1230,7 @@
   }
   // A finished any-time task clears itself (and disarms) after ADHOC_DONE_MS
   function expireAdhoc(){
+    if (busy) return;
     const now = Date.now(); let changed = false;
     day.adhocDone.slice().forEach(id => {
       if (now - (day.adhocDoneAt[id] || 0) >= ADHOC_DONE_MS){
@@ -1150,8 +1238,40 @@
         day.adhocArmed = day.adhocArmed.filter(x => x !== id); changed = true;
       }
     });
-    if (changed){ save('mf_day', day); if (isAdhoc() && !busy){ buildSteps(); renderProgress(); } }
+    if (changed){ save('mf_day', day); if (isAdhoc()){ buildSteps(); renderProgress(); } }
   }
+  /* ---------- Routine editor (grown-ups sheet) ---------- */
+  function renderEditor(){
+    const s = t(), host = $('#editor'); host.innerHTML = '';
+    $('#edit-label').textContent = s.editTitle;
+    ['morning','night'].forEach(r => {
+      const list = settings.routines[r], max = ROUTINE_MAX[r];
+      const box = document.createElement('div'); box.className = 'ed-routine';
+      box.innerHTML = `<div class="ed-head">${r==='morning' ? '☀️ '+s.editMorning : '🌙 '+s.editNight}<span>${list.length}/${max} ${s.steps}</span></div><div class="ed-list"></div><div class="ed-add"><small>${s.addTask}</small></div>`;
+      const ul = box.querySelector('.ed-list');
+      list.forEach((k,i) => {
+        const li = document.createElement('div'); li.className = 'ed-item';
+        li.innerHTML = `${TASKS[k].icon}<span class="nm">${i+1}. ${TASKS[k][settings.lang]}</span><button type="button" class="up" aria-label="Move up" ${i===0?'disabled':''}>▲</button><button type="button" class="dn" aria-label="Move down" ${i===list.length-1?'disabled':''}>▼</button><button type="button" class="rm" aria-label="Remove">✕</button>`;
+        li.querySelector('.up').addEventListener('click', ()=>{ [list[i-1], list[i]] = [list[i], list[i-1]]; applyRoutines(); });
+        li.querySelector('.dn').addEventListener('click', ()=>{ [list[i+1], list[i]] = [list[i], list[i+1]]; applyRoutines(); });
+        li.querySelector('.rm').addEventListener('click', ()=>{ if (list.length <= 1){ toast(s.minTask); return; } list.splice(i,1); applyRoutines(); });
+        ul.appendChild(li);
+      });
+      const add = box.querySelector('.ed-add');
+      TASK_ORDER.forEach(k => {
+        const b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', TASKS[k][settings.lang]); b.innerHTML = TASKS[k].icon;
+        b.disabled = list.length >= max;
+        b.addEventListener('click', ()=>{ if (list.length >= max){ toast(`${s.maxTasks} ${max}`); return; } list.push(k); applyRoutines(); });
+        add.appendChild(b);
+      });
+      host.appendChild(box);
+    });
+  }
+  function applyRoutines(){
+    save('mf_settings', settings); buildRoutines(settings.routines); pruneDone(); save('mf_day', day);
+    buildTown(); if (!isAdhoc()) buildSteps(); renderProgress(); renderTown(); SFX.click();
+  }
+
   let toastTimer = null;
   function toast(msg){ const el = $('#toast'); el.textContent = msg; el.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(()=>el.classList.remove('show'), 1600); }
 
@@ -1186,7 +1306,7 @@
     wrap.className = 'animal-wrap'; void wrap.offsetWidth;
     wrap.classList.add('anim-' + name); animalEl.classList.add('happy');
     const s = sfx || name; if (SFX[s]) SFX[s]();
-    setTimeout(()=>{ wrap.className='animal-wrap'; animalEl.classList.remove('happy'); cb && cb(); }, ANIM_MS[name] || 1500);
+    setTimeout(()=>{ wrap.className = restWrap(); animalEl.classList.remove('happy'); cb && cb(); }, ANIM_MS[name] || 1500);
   }
   function complete(i){
     const s = steps()[i]; if (doneList().includes(s.id)) return;
@@ -1228,26 +1348,26 @@
   $('#finale').addEventListener('click', ()=>{ $('#finale').hidden = true; });
   document.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', ()=>{ if (mode !== b.dataset.mode){ SFX.click(); setMode(b.dataset.mode); } }));
 
-  animalEl.addEventListener('click', ()=>{ if (busy) return; playAnim('hello'); });
+  animalEl.addEventListener('click', ()=>{ if (busy || (isNight() && isAsleep())) return; playAnim('hello'); });
   animalEl.addEventListener('keydown', e=>{ if (e.key==='Enter'||e.key===' '){ e.preventDefault(); animalEl.click(); } });
 
   document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', ()=>{ settings.lang = b.dataset.lang; save('mf_settings', settings); SFX.click(); renderAnimal(); renderText(); }));
   $('#sound').addEventListener('click', ()=>{
     settings.sound = !settings.sound; save('mf_settings', settings);
     $('#sound').textContent = settings.sound ? '🔊' : '🔇'; $('#sound').setAttribute('aria-pressed', String(settings.sound));
-    if (!settings.sound){ try{ speechSynthesis.cancel(); }catch(e){} } else SFX.click();
+    if (settings.sound) SFX.click();
     renderText();
   });
 
   /* ---------- Parent sheet (hold 1.2s) ---------- */
   const gear = $('#gear'), holdhint = $('#holdhint'); let holdTimer = null;
-  const startHold = e => { e.preventDefault(); gear.classList.add('holding'); holdhint.hidden = false; holdTimer = setTimeout(()=>{ openSheet(); cancelHold(); }, 1200); };
+  const startHold = e => { if (busy) return; e.preventDefault(); ac(); gear.classList.add('holding'); holdhint.hidden = false; holdTimer = setTimeout(()=>{ openSheet(); cancelHold(); }, 1200); };
   const cancelHold = () => { clearTimeout(holdTimer); gear.classList.remove('holding'); holdhint.hidden = true; };
   gear.addEventListener('pointerdown', startHold);
   ['pointerup','pointercancel','pointerleave'].forEach(ev => gear.addEventListener(ev, cancelHold));
   gear.addEventListener('contextmenu', e => e.preventDefault());
-  gear.addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' '){ e.preventDefault(); openSheet(); } });
-  function openSheet(){ $('#sheet').hidden = false; SFX.click(); }
+  gear.addEventListener('keydown', e => { if ((e.key==='Enter'||e.key===' ') && !busy){ e.preventDefault(); openSheet(); } });
+  function openSheet(){ renderEditor(); $('#sheet').hidden = false; SFX.click(); }
   function closeSheet(){ $('#sheet').hidden = true; }
   $('#close-sheet').addEventListener('click', closeSheet);
   $('#sheet').addEventListener('click', e => { if (e.target === $('#sheet')) closeSheet(); });
@@ -1281,18 +1401,21 @@
     const palette = ['#FF5E7A','#FFD36B','#5AC8FA','#7CFF9B','#FF9B3D','#C77DFF','#FFFFFF'];
     const stageH = $('#stage').getBoundingClientRect().height;
     const rockets = [], parts = [];
-    bursts.forEach(b => rockets.push({ launchAt:b.t-0.55, x: innerWidth*(0.15+Math.random()*0.7), y: innerHeight*0.62, ty: stageH*(0.12+Math.random()*0.35), big:b.big, c:pick(palette), c2:pick(palette), fired:false, exploded:false }));
+    const RISE = 0.55; // seconds from launch to burst, the same on every screen refresh rate
+    bursts.forEach(b => rockets.push({ launchAt:b.t-RISE, x: innerWidth*(0.15+Math.random()*0.7), y0: innerHeight*0.62, y: innerHeight*0.62, ty: stageH*(0.12+Math.random()*0.35), big:b.big, c:pick(palette), c2:pick(palette), fired:false, exploded:false, trail:0 }));
     const flash = $('#flash');
     const t0 = performance.now(); let last = t0;
     (function frame(now){
       const el = (now - t0)/1000, dt = Math.min((now-last)/1000, .05); last = now;
       cx.clearRect(0,0,innerWidth,innerHeight);
       rockets.forEach(r => {
-        if (!r.fired && el >= r.launchAt){ r.fired = true; r.vy = -(r.y - r.ty) / 0.55; }
+        if (!r.fired && el >= r.launchAt) r.fired = true;
         if (r.fired && !r.exploded){
-          r.y += r.vy*dt; r.vy *= 0.985;
-          for (let k=0;k<3;k++) parts.push({x:r.x+(Math.random()-.5)*4, y:r.y+Math.random()*10, vx:(Math.random()-.5)*20, vy:20+Math.random()*30, life:.35, age:0, r:1.6, c:'#FFE9A8'});
-          if (r.y <= r.ty){
+          const u = Math.min((el - r.launchAt) / RISE, 1), k = 1 - Math.pow(1 - u, 2);   // eased climb, time-based
+          r.y = r.y0 + (r.ty - r.y0) * k;
+          r.trail += dt * 180;
+          while (r.trail >= 1){ r.trail -= 1; parts.push({x:r.x+(Math.random()-.5)*4, y:r.y+Math.random()*10, vx:(Math.random()-.5)*20, vy:20+Math.random()*30, life:.35, age:0, r:1.6, c:'#FFE9A8'}); }
+          if (u >= 1){
             r.exploded = true;
             const n = r.big ? 150 : 90, sp = r.big ? 260 : 190;
             for (let k=0;k<n;k++){ const a = Math.random()*Math.PI*2, v = sp*(0.35+Math.random()*0.65); parts.push({x:r.x, y:r.y, vx:Math.cos(a)*v, vy:Math.sin(a)*v, life:1.3+Math.random()*0.8, age:0, r:r.big?3.2:2.6, c: Math.random()<.7 ? r.c : r.c2, spark:true}); }
@@ -1313,7 +1436,7 @@
   }
 
   /* ---------- Midnight rollover while open ---------- */
-  setInterval(()=>{ if (day.date !== todayKey()){ day = freshDay(); save('mf_day', day); renderAnimal(); renderProgress(); renderTown(); } }, 60000);
+  setInterval(()=>{ if (!busy && day.date !== todayKey()){ day = freshDay(); save('mf_day', day); renderAnimal(); buildSteps(); renderProgress(); renderTown(); } }, 60000);
   window.addEventListener('resize', ()=>renderProgress());
 
   setInterval(expireAdhoc, 5000);
